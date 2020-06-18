@@ -1,0 +1,29 @@
+stages:
+  - pages
+
+pages:
+  stage: pages
+
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - "**/*.rst"
+        - "**/*.py"
+
+  image: python:3.7-slim
+
+  script:
+  - apt-get update
+  - apt-get install gcc -y
+  - python -W ignore -m pip install --upgrade pip
+  - python -W ignore -m pip install -r docs/requirements-docs.txt
+  - python -W ignore -m pip install -r requirements.txt
+  - sphinx-build docs/source docs/build/html
+  - mv docs/build/html public
+
+  artifacts:
+    paths:
+    - public

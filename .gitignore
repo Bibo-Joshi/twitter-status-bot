@@ -1,0 +1,31 @@
+ # Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Unit test / coverage reports (not currently used)
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache
+nosetests.xml
+coverage.xml
+*,cover
+.coveralls.yml
+.mypy_cache
+
+# Sphinx documentation
+docs/build/
+
+# Pickle and log files
+tsb*
+
+# Saved headers
+/headers/*.png
+
+# Pycharm
+.idea/
+
+# virtual environment
+venv/

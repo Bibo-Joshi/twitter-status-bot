@@ -1,0 +1,5 @@
+python-telegram-bot==12.7
+emoji
+Pillow
+PyHyphen
+pytz

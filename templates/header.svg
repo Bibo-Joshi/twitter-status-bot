@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100.00009mm"
+   height="25.99221mm"
+   viewBox="0 0 100.00009 25.99221"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="header.svg"
+   inkscape:export-filename="C:\Users\Hinrich Mahler\PycharmProjects\twitter-status-bot\templates\header.png"
+   inkscape:export-xdpi="130.05"
+   inkscape:export-ydpi="130.05">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.627417"
+     inkscape:cx="30.721742"
+     inkscape:cy="91.435865"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1858"
+     inkscape:window-height="1057"
+     inkscape:window-x="1672"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-28.388279,-188.26425)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot819"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="scale(0.26458333)"><flowRegion
+         id="flowRegion821"><rect
+           id="rect823"
+           width="123.23861"
+           height="72.983521"
+           x="73.741135"
+           y="421.72635" /></flowRegion><flowPara
+         id="flowPara825">@Dirque_L</flowPara></flowRoot>    <path
+       style="opacity:1;fill:#25303e;fill-opacity:1;stroke:none;stroke-width:0.08255586;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 30.638271,188.26425 c -1.2465,0 -2.249992,1.04332 -2.249992,2.33929 v 13.25614 8.05749 2.33929 h 2.249992 95.500109 2.24999 v -2.33929 -8.05749 -13.25614 c 1e-5,-1.29597 -1.00349,-2.33929 -2.24999,-2.33929 z"
+       id="rect905"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:1;fill:#16202c;fill-opacity:1;stroke:none;stroke-width:0.08158947;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 31.020316,188.66446 c -1.236527,0 -2.23199,1.02726 -2.23199,2.30327 v 13.05203 7.93343 2.30327 h 2.23199 94.736024 2.23198 v -2.30327 -7.93343 -13.05203 c 1e-5,-1.27601 -0.99546,-2.30327 -2.23198,-2.30327 z"
+       id="rect905-3"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#8899a3;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 119.8657,196.26934 1.6064,1.67727 1.63002,-1.58277"
+       id="path922"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
