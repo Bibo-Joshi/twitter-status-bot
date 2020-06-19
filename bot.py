@@ -125,6 +125,25 @@ def get_sticker_set(bot: Bot, name: str) -> StickerSet:
             raise e
 
 
+def clean_sticker_set(bot: Bot) -> None:
+    """
+    Cleans up the sticker set, i.e. deletes all but the first sticker.
+
+    Args:
+        bot: The bot.
+    """
+    sticker_set = get_sticker_set(bot, build_sticker_set_name(bot))
+    if len(sticker_set.stickers) > 1:
+        for sticker in sticker_set.stickers[1:]:
+            try:
+                bot.delete_sticker_from_set(sticker.file_id)
+            except BadRequest as e:
+                if 'Stickerset_not_modified' in str(e):
+                    pass
+                else:
+                    raise e
+
+
 def get_sticker_id(text: str, user: User, context: CallbackContext) -> str:
     """
     Gives the sticker ID for the requested sticker.
@@ -153,10 +172,6 @@ def get_sticker_id(text: str, user: User, context: CallbackContext) -> str:
     sticker_set = get_sticker_set(bot, sticker_set_name)
     sticker_id = sticker_set.stickers[-1].file_id
 
-    if len(sticker_set.stickers) > 1:
-        for sticker in sticker_set.stickers[1:]:
-            context.bot.delete_sticker_from_set(sticker.file_id)
-
     return sticker_id
 
 
@@ -171,6 +186,7 @@ def message(update: Update, context: CallbackContext) -> None:
     context.bot.send_chat_action(update.effective_user.id, ChatAction.UPLOAD_PHOTO)
     file_id = get_sticker_id(update.message.text, update.effective_user, context)
     update.message.reply_sticker(file_id)
+    clean_sticker_set(context.bot)
 
 
 def inline(update: Update, context: CallbackContext) -> None:
@@ -189,7 +205,10 @@ def inline(update: Update, context: CallbackContext) -> None:
         file_id = get_sticker_id(update.inline_query.query, update.effective_user, context)
 
     update.inline_query.answer(
-        [InlineQueryResultCachedSticker(id='tweet', sticker_file_id=file_id)])
+        [InlineQueryResultCachedSticker(id='tweet', sticker_file_id=file_id)],
+        is_personal=True,
+    )
+    clean_sticker_set(context.bot)
 
 
 def default_message(update: Update, context: CallbackContext) -> None:
