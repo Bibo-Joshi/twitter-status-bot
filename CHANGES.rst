@@ -2,6 +2,15 @@
 Changelog
 =========
 
+Version 1.2
+===========
+*Released 2020-07-18*
+
+Bug fixes:
+
+* Make deletion of stickers from set even more robust
+* Handle edited messages
+
 Version 1.1
 ===========
 *Released 2020-06-20*

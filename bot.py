@@ -158,6 +158,8 @@ def get_sticker_id(text: str, user: User, context: CallbackContext) -> str:
     """
     bot = context.bot
 
+    clean_sticker_set(context.bot)
+
     sticker_set_name = build_sticker_set_name(bot)
     emojis = '🐦'
 
@@ -183,9 +185,10 @@ def message(update: Update, context: CallbackContext) -> None:
         update: The Telegram update.
         context: The callback context as provided by the dispatcher.
     """
+    msg = update.effective_message
     context.bot.send_chat_action(update.effective_user.id, ChatAction.UPLOAD_PHOTO)
-    file_id = get_sticker_id(update.message.text, update.effective_user, context)
-    update.message.reply_sticker(file_id)
+    file_id = get_sticker_id(msg.text, update.effective_user, context)
+    msg.reply_sticker(file_id)
     clean_sticker_set(context.bot)
 
 
@@ -219,8 +222,8 @@ def default_message(update: Update, context: CallbackContext) -> None:
         update: The Telegram update.
         context: The callback context as provided by the dispatcher.
     """
-    update.message.reply_text('Sorry, but I can only text messages. '
-                              'Send "/help" for more information.')
+    update.effective_message.reply_text('Sorry, but I can only text messages. '
+                                        'Send "/help" for more information.')
 
 
 def register_dispatcher(disptacher: Dispatcher) -> None:
