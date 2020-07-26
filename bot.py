@@ -243,8 +243,8 @@ def register_dispatcher(disptacher: Dispatcher) -> None:
     dp.add_handler(CommandHandler(['start', 'help'], info))
 
     # functionality
-    dp.add_handler(MessageHandler(Filters.text, message))
-    dp.add_handler(MessageHandler(Filters.all, default_message))
+    dp.add_handler(MessageHandler(Filters.text & Filters.private, message))
+    dp.add_handler(MessageHandler(Filters.all & Filters.private, default_message))
     dp.add_handler(InlineQueryHandler(inline))
 
     # Bot commands

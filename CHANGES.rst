@@ -2,6 +2,15 @@
 Changelog
 =========
 
+Version 1.3
+===========
+*Released 2020-07-26*
+
+Bug fixes:
+
+* Handle messages only when in private chat. The bot apparently was added to some channels, but that just doesn't make any sense.
+* Fix failing of documentation build
+
 Version 1.2
 ===========
 *Released 2020-07-18*
