@@ -4,7 +4,9 @@
 import logging
 from configparser import ConfigParser
 from telegram import ParseMode
-from telegram.ext import Updater, Defaults, PicklePersistence
+from telegram.ext import Updater, Defaults, PicklePersistence, Filters
+
+from ptbstats import set_dispatcher, register_stats, SimpleStats
 
 import bot
 
@@ -22,6 +24,7 @@ def main() -> None:
     config = ConfigParser()
     config.read('bot.ini')
     token = config['TwitterStatusBot']['token']
+    admin = int(config['TwitterStatusBot']['admins_chat_id'])
 
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
@@ -29,6 +32,13 @@ def main() -> None:
     defaults = Defaults(parse_mode=ParseMode.HTML, disable_notification=True)
     persistence = PicklePersistence('tsb.pickle')
     updater = Updater(token, use_context=True, defaults=defaults, persistence=persistence)
+
+    # Set up stats
+    set_dispatcher(updater.dispatcher)
+    register_stats(SimpleStats('ilq', lambda u: bool(u.inline_query)), admin_id=admin)
+    register_stats(SimpleStats(
+        'text', lambda u: bool(u.effective_message and (Filters.text & ~Filters.command)(u))),
+                   admin_id=admin)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher

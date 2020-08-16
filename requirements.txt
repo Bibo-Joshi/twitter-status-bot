@@ -3,3 +3,4 @@ emoji
 Pillow
 PyHyphen
 pytz
+git+https://gitlab.com/HirschHeissIch/ptbstats.git@v1.0
