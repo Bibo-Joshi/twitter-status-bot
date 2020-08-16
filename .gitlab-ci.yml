@@ -17,7 +17,7 @@ pages:
 
   script:
   - apt-get update
-  - apt-get install gcc -y
+  - apt-get install gcc git -y
   - python -W ignore -m pip install --upgrade pip
   - python -W ignore -m pip install -r docs/requirements-docs.txt
   - python -W ignore -m pip install -r requirements.txt
