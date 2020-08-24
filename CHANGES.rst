@@ -2,11 +2,21 @@
 Changelog
 =========
 
+Version 1.5
+===========
+*Released 2020-08-24*
+
+**Minor changes:**
+
+* Update ``ptbstats`` to v1.2
+* Don't accept empty inline queries for stats
+* Handle exceptions for updates without ``effective_chat`` better
+
 Version 1.4
 ===========
 *Released 2020-08-16*
 
-Enhancements:
+**Enhancements:**
 
 * Include the `ptbstats <https://hirschheissich.gitlab.io/ptbstats/>`_ plugin for statistics
 
@@ -14,7 +24,7 @@ Version 1.3
 ===========
 *Released 2020-07-26*
 
-Bug fixes:
+**Bug fixes:**
 
 * Handle messages only when in private chat. The bot apparently was added to some channels, but that just doesn't make any sense.
 * Fix failing of documentation build

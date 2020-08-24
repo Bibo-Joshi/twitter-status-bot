@@ -35,9 +35,12 @@ def main() -> None:
 
     # Set up stats
     set_dispatcher(updater.dispatcher)
-    register_stats(SimpleStats('ilq', lambda u: bool(u.inline_query)), admin_id=admin)
+    register_stats(SimpleStats('ilq', lambda u: bool(u.inline_query and u.inline_query.query)),
+                   admin_id=admin)
     register_stats(SimpleStats(
-        'text', lambda u: bool(u.effective_message and (Filters.text & ~Filters.command)(u))),
+        'text',
+        lambda u: bool(u.effective_message and (Filters.private & Filters.text & ~Filters.command)
+                       (u))),
                    admin_id=admin)
 
     # Get the dispatcher to register handlers

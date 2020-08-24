@@ -79,7 +79,7 @@ def error(update: Update, context: CallbackContext) -> None:
     if update.effective_user:
         payload += ' with the user {}'.format(
             mention_html(update.effective_user.id, update.effective_user.first_name))
-    if update.effective_chat.username:
+    if update.effective_chat and update.effective_chat.username:
         payload += f' (@{html.escape(update.effective_chat.username)})'
     if update.poll:
         payload += f' with the poll id {update.poll.id}.'
