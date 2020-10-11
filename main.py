@@ -31,7 +31,11 @@ def main() -> None:
     # Post version 12 this will no longer be necessary
     defaults = Defaults(parse_mode=ParseMode.HTML, disable_notification=True)
     persistence = PicklePersistence('tsb.pickle')
-    updater = Updater(token, use_context=True, defaults=defaults, persistence=persistence)
+    updater = Updater(token,
+                      use_context=True,
+                      defaults=defaults,
+                      persistence=persistence,
+                      workers=8)
 
     # Set up stats
     set_dispatcher(updater.dispatcher)

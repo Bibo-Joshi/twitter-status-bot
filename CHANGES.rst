@@ -2,6 +2,17 @@
 Changelog
 =========
 
+Version 1.5.1
+===========
+*Released 2020-08-24*
+
+**Minor changes:**
+
+* Update PTB to v13.0
+* Update ``ptbstats`` to v1.3
+* Handle hyphenation errors by warning users
+* Handle flood control errors by going to sleep
+
 Version 1.5
 ===========
 *Released 2020-08-24*

@@ -2,20 +2,22 @@
 # -*- coding: utf-8 -*-
 """Methods for the bot functionality."""
 import logging
+import time
 import traceback
 import html
 from configparser import ConfigParser
 from tempfile import NamedTemporaryFile
+from typing import Dict, Any
 
 from telegram import (Update, InlineKeyboardMarkup, InlineKeyboardButton, Bot, StickerSet,
                       ChatAction, User, InlineQueryResultCachedSticker)
-from telegram.error import BadRequest
+from telegram.error import BadRequest, RetryAfter
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler, MessageHandler, Filters, \
     InlineQueryHandler
 from telegram.utils.helpers import mention_html
 from emoji import emojize
 
-from twitter import build_sticker
+from twitter import build_sticker, HyphenationError
 
 config = ConfigParser()
 config.read('bot.ini')
@@ -39,15 +41,20 @@ def info(update: Update, context: CallbackContext) -> None:
         update: The Telegram update.
         context: The callback context as provided by the dispatcher.
     """
-    text = emojize(('I\'m <b>Twitter Status Bot</b>. My profession is generating custom stickers '
-                    ' looking like tweets.'
-                    '\n\nTo learn more about me, please visit my homepage '
-                    ':slightly_smiling_face:.'),
-                   use_aliases=True)
+    if context.args:
+        text = str(HyphenationError())
+        keyboard = InlineKeyboardMarkup.from_button(
+            InlineKeyboardButton('Try again', switch_inline_query=''))
+    else:
+        text = emojize(('I\'m <b>Twitter Status Bot</b>. My profession is generating custom'
+                        ' stickers looking like tweets.'
+                        '\n\nTo learn more about me, please visit my homepage '
+                        ':slightly_smiling_face:.'),
+                       use_aliases=True)
 
-    keyboard = InlineKeyboardMarkup.from_button(
-        InlineKeyboardButton(emojize('Twitter Status Bot :robot_face:', use_aliases=True),
-                             url=HOMEPAGE))
+        keyboard = InlineKeyboardMarkup.from_button(
+            InlineKeyboardButton(emojize('Twitter Status Bot :robot_face:', use_aliases=True),
+                                 url=HOMEPAGE))
 
     update.message.reply_text(text, reply_markup=keyboard)
 
@@ -63,6 +70,10 @@ def error(update: Update, context: CallbackContext) -> None:
     """
     # Log the error before we do anything else, so we can see it even if something breaks.
     logger.error(msg="Exception while handling an update:", exc_info=context.error)
+
+    if isinstance(context.error, RetryAfter):
+        time.sleep(int(context.error.retry_after) + 2)
+        return
 
     # Inform sender of update, that something went wrong
     if update.effective_message:
@@ -187,8 +198,11 @@ def message(update: Update, context: CallbackContext) -> None:
     """
     msg = update.effective_message
     context.bot.send_chat_action(update.effective_user.id, ChatAction.UPLOAD_PHOTO)
-    file_id = get_sticker_id(msg.text, update.effective_user, context)
-    msg.reply_sticker(file_id)
+    try:
+        file_id = get_sticker_id(msg.text, update.effective_user, context)
+        msg.reply_sticker(file_id)
+    except HyphenationError as e:
+        msg.reply_text(str(e))
     clean_sticker_set(context.bot)
 
 
@@ -205,12 +219,25 @@ def inline(update: Update, context: CallbackContext) -> None:
     if not query:
         return
     else:
-        file_id = get_sticker_id(update.inline_query.query, update.effective_user, context)
+        kwargs: Dict[str, Any] = {}
+        try:
+            file_id = get_sticker_id(update.inline_query.query, update.effective_user, context)
+            kwargs['results'] = [
+                InlineQueryResultCachedSticker(id='tweet', sticker_file_id=file_id)
+            ]
+        except HyphenationError:
+            kwargs['results'] = []
+            kwargs['switch_pm_text'] = 'Click me!'
+            kwargs['switch_pm_parameter'] = 'hyphenation_error'
 
-    update.inline_query.answer(
-        [InlineQueryResultCachedSticker(id='tweet', sticker_file_id=file_id)],
-        is_personal=True,
-    )
+        try:
+            update.inline_query.answer(**kwargs, is_personal=True)
+        except BadRequest as e:
+            if 'Query is too old' in str(e):
+                pass
+            else:
+                raise e
+
     clean_sticker_set(context.bot)
 
 

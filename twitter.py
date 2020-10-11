@@ -54,6 +54,14 @@ HYPHENATOR = Hyphenator('en_US')
 """:class:`PyHyphen.Hyphenator`: A hyphenator to use to wrap text."""
 
 
+class HyphenationError(Exception):
+
+    def __init__(self) -> None:
+        super().__init__('Something went wrong trying to hyphenate your text. Please note that '
+                         'words may not be longer than 100 characters. Also, currently only '
+                         'English is properly supported for hyphenation.')
+
+
 def mask_circle_transparent(image: Union[Image.Image, str]) -> Image.Image:
     """
     Cuts a circle from an square image.
@@ -264,8 +272,11 @@ def build_body(text: str) -> Image.Image:
     if '\n' in text:
         top = -12
         lines = text.split('\n')
-        text = '\n'.join(
-            [fill(line, max_chars_per_line, use_hyphenator=HYPHENATOR) for line in lines])
+        try:
+            text = '\n'.join(
+                [fill(line, max_chars_per_line, use_hyphenator=HYPHENATOR) for line in lines])
+        except Exception:
+            raise HyphenationError
         background = multiline_text((left, top), text, background)
     else:
         width, _ = BIG_TEXT_FONT.getsize(text)
@@ -273,7 +284,10 @@ def build_body(text: str) -> Image.Image:
         if width > max_pixels_per_line:
             width, _ = SMALL_TEXT_FONT.getsize(text)
             if width > max_pixels_per_line:
-                text = fill(text, max_chars_per_line, use_hyphenator=HYPHENATOR)
+                try:
+                    text = fill(text, max_chars_per_line, use_hyphenator=HYPHENATOR)
+                except Exception:
+                    raise HyphenationError
                 background = multiline_text((left, top), text, background)
             else:
                 background = single_line_text((left, top), text, SMALL_TEXT_FONT, background)
