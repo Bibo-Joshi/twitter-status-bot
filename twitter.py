@@ -9,7 +9,7 @@ from telegram import User
 from telegram.ext import CallbackContext
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from hyphen import Hyphenator
-from textwrap2 import fill
+from hyphen.textwrap2 import fill
 
 TEMPLATE_DIRECTORY = 'templates'
 """:obj:`str`: Name of the directory containing the templates."""
