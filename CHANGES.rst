@@ -2,6 +2,20 @@
 Changelog
 =========
 
+Version 1.5.2
+=============
+*Released 2021-03-13*
+
+**New Features:**
+
+* Remember generated stickers and suggest them in inline mode
+
+**Minor changes:**
+
+* Bump dependencies
+* Improve error handler
+* Use bytes stream instead of temporary files
+
 Version 1.5.1
 ===========
 *Released 2020-08-24*

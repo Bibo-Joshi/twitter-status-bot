@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """Methods for creating the stickers."""
 import datetime as dtm
+from io import BytesIO
+
 import pytz
-from tempfile import NamedTemporaryFile
 from typing import Union
 from telegram import User
 from telegram.ext import CallbackContext
@@ -225,10 +226,10 @@ def get_header(user: User, context: CallbackContext) -> Image.Image:
     # Get users profile picture, if it exists
     if photo_file_id:
         photo_file = bot.get_file(photo_file_id)
-        with NamedTemporaryFile(suffix='.png', delete=False) as file:
-            photo_file.download(file.name)
-            file.close()
-            user_picture = Image.open(file.name)
+        picture_stream = BytesIO()
+        photo_file.download(out=picture_stream)
+        picture_stream.seek(0)
+        user_picture = Image.open(picture_stream)
     else:
         user_picture = None
 

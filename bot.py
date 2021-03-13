@@ -6,14 +6,15 @@ import time
 import traceback
 import html
 from configparser import ConfigParser
-from tempfile import NamedTemporaryFile
+from io import BytesIO
 from typing import Dict, Any
+from uuid import uuid4
 
 from telegram import (Update, InlineKeyboardMarkup, InlineKeyboardButton, Bot, StickerSet,
                       ChatAction, User, InlineQueryResultCachedSticker)
 from telegram.error import BadRequest, RetryAfter
 from telegram.ext import CallbackContext, Dispatcher, CommandHandler, MessageHandler, Filters, \
-    InlineQueryHandler
+    InlineQueryHandler, ChosenInlineResultHandler
 from telegram.utils.helpers import mention_html
 from emoji import emojize
 
@@ -31,6 +32,10 @@ STICKER_SET_NAME: str = config['TwitterStatusBot']['sticker_set_name']
 ``bot.ini``."""
 HOMEPAGE: str = 'https://hirschheissich.gitlab.io/twitter-status-bot/'
 """:obj:`str`: Homepage of this bot."""
+FILE_IDS: str = 'file_ids'
+""":obj:`str`: Key for ``user_data`` where sticker ids are stored."""
+TEMP_FILE_IDS: str = 'temp_file_ids'
+""":obj:`str`: Key for ``user_data`` where temporary sticker ids are stored."""
 
 
 def info(update: Update, context: CallbackContext) -> None:
@@ -76,7 +81,7 @@ def error(update: Update, context: CallbackContext) -> None:
         return
 
     # Inform sender of update, that something went wrong
-    if update.effective_message:
+    if isinstance(update, Update) and update.effective_message:
         text = emojize('Something went wrong :worried:. I informed the admin :nerd_face:.',
                        use_aliases=True)
         update.effective_message.reply_text(text)
@@ -87,15 +92,16 @@ def error(update: Update, context: CallbackContext) -> None:
 
     # Gather information from the update
     payload = ''
-    if update.effective_user:
-        payload += ' with the user {}'.format(
-            mention_html(update.effective_user.id, update.effective_user.first_name))
-    if update.effective_chat and update.effective_chat.username:
-        payload += f' (@{html.escape(update.effective_chat.username)})'
-    if update.poll:
-        payload += f' with the poll id {update.poll.id}.'
-    text = f'Hey.\nThe error <code>{html.escape(str(context.error))}</code> happened' \
-           f'{payload}. The full traceback:\n\n<code>{html.escape(trace)}</code>'
+    if isinstance(update, Update):
+        if update.effective_user:
+            payload += ' with the user {}'.format(
+                mention_html(update.effective_user.id, update.effective_user.first_name))
+        if update.effective_chat and update.effective_chat.username:
+            payload += f' (@{html.escape(update.effective_chat.username)})'
+        if update.poll:
+            payload += f' with the poll id {update.poll.id}.'
+        text = f'Hey.\nThe error <code>{html.escape(str(context.error))}</code> happened' \
+               f'{payload}. The full traceback:\n\n<code>{html.escape(trace)}</code>'
 
     # Send to admin
     context.bot.send_message(ADMIN, text)
@@ -174,13 +180,13 @@ def get_sticker_id(text: str, user: User, context: CallbackContext) -> str:
     sticker_set_name = build_sticker_set_name(bot)
     emojis = '🐦'
 
-    with NamedTemporaryFile(suffix='.png', delete=False) as file:
-        sticker = build_sticker(text, user, context)
-        sticker.save(file.name)
-        file.close()
+    sticker_stream = BytesIO()
+    sticker = build_sticker(text, user, context)
+    sticker.save(sticker_stream, format='PNG')
+    sticker_stream.seek(0)
 
-        get_sticker_set(bot, sticker_set_name)
-        bot.add_sticker_to_set(ADMIN, sticker_set_name, emojis, png_sticker=open(file.name, 'rb'))
+    get_sticker_set(bot, sticker_set_name)
+    bot.add_sticker_to_set(ADMIN, sticker_set_name, emojis, png_sticker=sticker_stream)
 
     sticker_set = get_sticker_set(bot, sticker_set_name)
     sticker_id = sticker_set.stickers[-1].file_id
@@ -201,6 +207,7 @@ def message(update: Update, context: CallbackContext) -> None:
     try:
         file_id = get_sticker_id(msg.text, update.effective_user, context)
         msg.reply_sticker(file_id)
+        context.user_data.setdefault(FILE_IDS, []).append(file_id)
     except HyphenationError as e:
         msg.reply_text(str(e))
     clean_sticker_set(context.bot)
@@ -216,29 +223,52 @@ def inline(update: Update, context: CallbackContext) -> None:
     """
     query = update.inline_query.query
 
-    if not query:
-        return
-    else:
-        kwargs: Dict[str, Any] = {}
+    file_ids = context.user_data.setdefault(FILE_IDS, [])
+    kwargs: Dict[str, Any] = {
+        'results': [
+            InlineQueryResultCachedSticker(id=f'tweet {i}', sticker_file_id=sticker_id)
+            for i, sticker_id in enumerate(reversed(file_ids))
+        ]
+    }
+
+    if query:
         try:
             file_id = get_sticker_id(update.inline_query.query, update.effective_user, context)
-            kwargs['results'] = [
-                InlineQueryResultCachedSticker(id='tweet', sticker_file_id=file_id)
-            ]
+            key = str(uuid4())
+            context.user_data.setdefault(TEMP_FILE_IDS, {})[key] = file_id
+            kwargs['results'].insert(
+                0, InlineQueryResultCachedSticker(id=key, sticker_file_id=file_id))
         except HyphenationError:
             kwargs['results'] = []
             kwargs['switch_pm_text'] = 'Click me!'
             kwargs['switch_pm_parameter'] = 'hyphenation_error'
 
-        try:
-            update.inline_query.answer(**kwargs, is_personal=True)
-        except BadRequest as e:
-            if 'Query is too old' in str(e):
-                pass
-            else:
-                raise e
+    try:
+        update.inline_query.answer(**kwargs, is_personal=True, auto_pagination=True, cache_time=0)
+    except BadRequest as e:
+        if 'Query is too old' in str(e):
+            pass
+        else:
+            raise e
 
     clean_sticker_set(context.bot)
+
+
+def handle_chosen_inline_result(update: Update, context: CallbackContext) -> None:
+    """
+    Appends the chosen sticker ID to the users corresponding list.
+
+    Args:
+        update: The Telegram update.
+        context: The callback context as provided by the dispatcher.
+    """
+    result_id = update.chosen_inline_result.result_id
+    if not result_id.startswith('tweet'):
+        temp_dict = context.user_data.setdefault(TEMP_FILE_IDS, {})
+        file_id = temp_dict.get(result_id)
+        if file_id:
+            context.user_data.setdefault(FILE_IDS, []).append(file_id)
+        temp_dict.clear()
 
 
 def default_message(update: Update, context: CallbackContext) -> None:
@@ -273,6 +303,7 @@ def register_dispatcher(disptacher: Dispatcher) -> None:
     dp.add_handler(MessageHandler(Filters.text & Filters.chat_type.private, message))
     dp.add_handler(MessageHandler(Filters.all & Filters.chat_type.private, default_message))
     dp.add_handler(InlineQueryHandler(inline))
+    dp.add_handler(ChosenInlineResultHandler(handle_chosen_inline_result))
 
     # Bot commands
     dp.bot.set_my_commands([['help', 'Displays a short info message about the Twitter Status Bot'],
