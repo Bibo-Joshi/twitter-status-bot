@@ -2,6 +2,22 @@
 Changelog
 =========
 
+Version 2.0
+===========
+*Released 2021-07-01*
+
+**New Features:**
+
+* Set/show/delete fallback picture when the bot can't access your profile picture (because there is none or due to privacy settings)
+* Toggle whether or not to save sent stickers
+* Delete selected saved stickers
+
+**Major Changes:**
+
+* Rearranged a lot of internals
+* Upgraded to PTB v13.7
+* Don't answer inline queries if there is already a new one for the user
+
 Version 1.5.2
 =============
 *Released 2021-03-13*
@@ -17,7 +33,7 @@ Version 1.5.2
 * Use bytes stream instead of temporary files
 
 Version 1.5.1
-===========
+=============
 *Released 2020-08-24*
 
 **Minor changes:**

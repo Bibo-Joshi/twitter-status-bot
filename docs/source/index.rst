@@ -13,7 +13,5 @@
    :caption: Developer Reference
 
    bot
-   twitter
-   contributing
    hosting
    changelog
