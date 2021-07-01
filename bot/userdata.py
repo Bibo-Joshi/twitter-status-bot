@@ -7,7 +7,7 @@ from telegram import User, PhotoSize
 from telegram.ext import CallbackContext
 
 
-class UserData:
+class UserData:  # pylint: disable=R0902
     """Custom class to store information relevant for each user.
 
     Args:
@@ -49,7 +49,7 @@ class UserData:
         '_ilq_counter',
     )
 
-    def __init__(
+    def __init__(  # pylint: disable=R0913
         self,
         user_id: Optional[int] = None,
         username: Optional[str] = None,
@@ -118,7 +118,7 @@ class UserData:
         # Only called when `self.item` raises AttributeError
         # But pickle calls it for some magic methods, too …
         if item.startswith('__') and item.endswith('__'):
-            return super().__getattr__(item)  # type: ignore[misc]
+            return super().__getattr__(item)  # type: ignore[misc]  # pylint: disable=E1101
         return None
 
     _INIT_ARGS = Tuple[

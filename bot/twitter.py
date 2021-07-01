@@ -7,7 +7,7 @@ from typing import Union, cast, Optional
 import pytz
 from telegram import User
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from hyphen.textwrap2 import fill
+from textwrap2 import fill
 
 from bot.constants import (
     HEADER_TEMPLATE,
@@ -174,7 +174,7 @@ def build_header(  # pylint: disable=R0914
     return background
 
 
-def get_header(user: User, context: CCT) -> Image.Image:
+def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0914
     """
     Gets the header for the sticker customized for the given user. The header either be loaded from
     file or created anew, if there is no header for the user or users info changed.
@@ -261,17 +261,14 @@ def build_body(text: str) -> Image.Image:
 
         return background_
 
-    def multiline_text(position, text_, background__):  # type: ignore
+    def multiline_text(position, text_, background_):  # type: ignore
         spacing = 4
         _, height = SMALL_TEXT_FONT.getsize_multiline(text_, spacing=spacing)
-        background__ = background__.resize((background__.width, height - spacing))
-        draw = ImageDraw.Draw(background__)
-        draw.multiline_text(
-            position,
-            text_,
-        )
+        background_ = background_.resize((background_.width, height - spacing))
+        draw = ImageDraw.Draw(background_)
+        draw.multiline_text(position, text_, fill=TEXT_MAIN, font=SMALL_TEXT_FONT, spacing=spacing)
 
-        return background__
+        return background_
 
     background = Image.open(BODY_TEMPLATE)
     left = 27

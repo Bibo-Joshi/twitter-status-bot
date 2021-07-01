@@ -6,7 +6,7 @@ import traceback
 from typing import cast
 
 from telegram import Update
-from telegram.error import BadRequest, RetryAfter
+from telegram.error import BadRequest, RetryAfter, Unauthorized
 from telegram.utils.helpers import mention_html
 
 from bot.utils import logger, clean_sticker_set
@@ -55,7 +55,9 @@ def error(update: object, context: CCT) -> None:
     if isinstance(context.error, HyphenationError):
         return
 
-    if isinstance(context.error, BadRequest) and "Query too old" in str(context.error):
+    if (
+        isinstance(context.error, BadRequest) and "Query is too old" in str(context.error)
+    ) or isinstance(context.error, Unauthorized):
         return
 
     if isinstance(context.error, RetryAfter):

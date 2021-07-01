@@ -2,6 +2,19 @@
 Changelog
 =========
 
+Version 2.0.1
+=============
+*Released 2021-07-02*
+
+**Bug fixes:**
+
+* Fix multiline tweets
+
+**Minor changes:**
+
+* Update error handling
+* Update Code Quality Checks
+
 Version 2.0
 ===========
 *Released 2021-07-01*
