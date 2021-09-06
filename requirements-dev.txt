@@ -2,7 +2,7 @@ pre-commit
 # Make sure that the versions specified here match the pre-commit settings!
 black==20.8b1
 flake8==3.9.2
-pylint==2.9.3
+pylint==2.10.2
 mypy==0.910
 types-pytz
-pyupgrade==2.19.4
+pyupgrade==2.25.0

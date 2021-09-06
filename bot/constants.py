@@ -13,11 +13,10 @@ config.read("bot.ini")
 PATH_PREFIX = '../' if Path('../headers').is_dir() else ''
 
 ADMIN_KEY: str = 'ADMIN_KEY'
-""":obj:`STR`: The admins chat id is stored under this key in ``bot_data``."""
-STICKER_SET_NAME_KEY: str = 'STICKER_SET_NAME_KEY'
-""":obj:`STR`: The sticker set name is stored under this key in ``bot_data``."""
-STICKER_SET_LOGO = f"{PATH_PREFIX}logo/TwitterStatusBot-round.png"
-""":obj:`str`: Path of the picture to use as logo for the sticker set."""
+""":obj:`str`: The admins chat id is stored under this key in ``bot_data``."""
+STICKER_CHAT_ID_KEY: str = 'STICKER_CHAT_ID_KEY'
+""":obj:`srt`: The name of the chat where stickers can be sent to get their file IDs is stored
+under this key in ``bot_data``."""
 HOMEPAGE: str = "https://hirschheissich.gitlab.io/twitter-status-bot/"
 """:obj:`str`: Homepage of this bot."""
 TEMPLATE_DIRECTORY = f"{PATH_PREFIX}templates"

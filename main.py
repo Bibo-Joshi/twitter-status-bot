@@ -2,19 +2,18 @@
 """The script that runs the bot."""
 import logging
 from configparser import ConfigParser
-from typing import cast, Dict
 
 from telegram import ParseMode
 from telegram.ext import Updater, Defaults, PicklePersistence, ContextTypes
 
 from bot.setup import setup_dispatcher
-from bot.userdata import UserData, CCT
+from bot.userdata import UserData
 
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
-    # filename="tsb.log",
+    filename="tsb.log",
 )
 aps_logger = logging.getLogger('apscheduler')
 aps_logger.setLevel(logging.WARNING)
@@ -29,12 +28,13 @@ def main() -> None:
     config.read("bot.ini")
     token = config["TwitterStatusBot"]["token"]
     admin_id = int(config["TwitterStatusBot"]["admins_chat_id"])
-    sticker_set_name = config["TwitterStatusBot"]["sticker_set_name"]
+    sticker_chat_id = config["TwitterStatusBot"]["sticker_chat_id"]
 
     defaults = Defaults(parse_mode=ParseMode.HTML, disable_notification=True, run_async=True)
-    # Cast due to a type hinting bug in ptb v13.6
-    context_types = cast(ContextTypes[CCT, UserData, Dict, Dict], ContextTypes(user_data=UserData))
-    persistence = PicklePersistence("tsb.pickle", context_types=context_types, single_file=False)
+    context_types = ContextTypes(user_data=UserData)
+    persistence = PicklePersistence(
+        "tsb.pickle", context_types=context_types, single_file=False, store_chat_data=False
+    )
     updater = Updater(
         token,
         defaults=defaults,
@@ -45,14 +45,10 @@ def main() -> None:
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
-    setup_dispatcher(dispatcher, admin_id, sticker_set_name)
+    setup_dispatcher(dispatcher, admin_id, sticker_chat_id)
 
     # Start the Bot
-    updater.start_polling()
-
-    # Run the bot until you press Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT. This should be used most of the time, since
-    # start_polling() is non-blocking and will stop the bot gracefully.
+    updater.start_polling(drop_pending_updates=True)
     updater.idle()
 
 

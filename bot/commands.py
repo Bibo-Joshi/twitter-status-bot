@@ -2,9 +2,17 @@
 """Methods for simple commands."""
 from typing import cast
 
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, Message, User, ChatAction
+from telegram import (
+    Update,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    Message,
+    User,
+    ChatAction,
+    Sticker,
+)
 
-from bot.utils import get_sticker_id, clean_sticker_set
+from bot.utils import get_sticker_photo_stream
 from bot.constants import HOMEPAGE
 from bot.twitter import HyphenationError
 from bot.userdata import CCT, UserData
@@ -21,10 +29,9 @@ def sticker_message(update: Update, context: CCT) -> None:
     msg = cast(Message, update.effective_message)
     user = cast(User, update.effective_user)
     context.bot.send_chat_action(user.id, ChatAction.UPLOAD_PHOTO)
-    file_unique_id, file_id = get_sticker_id(cast(str, msg.text), user, context)
-    msg.reply_sticker(file_id)
-    cast(UserData, context.user_data).sticker_file_ids[file_unique_id] = file_id
-    clean_sticker_set(context)
+    stream = get_sticker_photo_stream(cast(str, msg.text), user, context)
+    sticker = cast(Sticker, msg.reply_sticker(stream).sticker)
+    cast(UserData, context.user_data).sticker_file_ids[sticker.file_unique_id] = sticker.file_id
 
 
 def info(update: Update, context: CCT) -> None:

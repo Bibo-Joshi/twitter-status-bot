@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Methods for error handlers."""
 import html
+import logging
 import time
 import traceback
 from typing import cast
@@ -9,10 +10,12 @@ from telegram import Update
 from telegram.error import BadRequest, RetryAfter, Unauthorized
 from telegram.utils.helpers import mention_html
 
-from bot.utils import logger, clean_sticker_set
 from bot.constants import ADMIN_KEY
 from bot.twitter import HyphenationError
 from bot.userdata import CCT
+
+
+logger = logging.getLogger(__name__)
 
 
 def hyphenation_error(update: object, context: CCT) -> None:
@@ -62,11 +65,6 @@ def error(update: object, context: CCT) -> None:
 
     if isinstance(context.error, RetryAfter):
         time.sleep(int(context.error.retry_after) + 2)
-
-    # Clear the sticker set just in case
-    # We do this *after* the sleep for RetryAfter for obvious reasons
-    clean_sticker_set(context)
-    if isinstance(context.error, RetryAfter):
         return
 
     # Inform sender of update, that something went wrong

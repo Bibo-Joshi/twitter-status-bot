@@ -15,7 +15,7 @@ repos:
     -   id: flake8
         language: python
 -   repo: https://github.com/PyCQA/pylint
-    rev: v2.9.3
+    rev: v2.10.2
     hooks:
     -   id: pylint
         files: ^(main|bot/\w*).py$
@@ -43,7 +43,7 @@ repos:
             - pytz
             - git+https://gitlab.com/HirschHeissIch/ptbstats.git@v1.3.1
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v2.19.4
+    rev: v2.25.0
     hooks:
     -   id: pyupgrade
         files: ^(main|bot/\w*).py$

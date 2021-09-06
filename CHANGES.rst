@@ -2,6 +2,15 @@
 Changelog
 =========
 
+Version 2.1
+===========
+*Released 2021-09-06*
+
+**Major Changes:**
+
+* Use the ``send_sticker`` method again instead of adding stickers to a sticker set. This reduces the number of requests required to create one sticker and should make the bot more stable.
+* When a new inline query comes in while another one is still processed, terminate the creation of the first sticker as quickly as possible.
+
 Version 2.0.1
 =============
 *Released 2021-07-02*

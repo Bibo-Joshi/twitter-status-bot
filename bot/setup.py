@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Methods for initializing the dispatcher."""
 import warnings
+from typing import Union
 
 from ptbstats import set_dispatcher, register_stats, SimpleStats
 from telegram import BotCommandScopeChat
@@ -13,7 +14,7 @@ from telegram.ext import (
     ChosenInlineResultHandler,
 )
 
-from bot.constants import ADMIN_KEY, STICKER_SET_NAME_KEY
+from bot.constants import ADMIN_KEY, STICKER_CHAT_ID_KEY
 from bot.deletesticker import delete_sticker_conversation
 from bot.setfallbackpicture import set_fallback_picture_conversation
 from bot.utils import default_message
@@ -38,7 +39,9 @@ warnings.filterwarnings(
 
 
 def setup_dispatcher(
-    dispatcher: Dispatcher[CCT, UserData, dict, dict], admin_id: int, sticker_set_name: str
+    dispatcher: Dispatcher[CCT, UserData, dict, dict],
+    admin_id: int,
+    sticker_chat_id: Union[str, int],
 ) -> None:
     """
     Adds handlers and sets up ``bot_data``. Also sets the bot commands.
@@ -46,7 +49,7 @@ def setup_dispatcher(
     Args:
         dispatcher: The :class:`telegram.ext.Dispatcher`.
         admin_id: The admins chat id.
-        sticker_set_name: The name of the sticker set to use.
+        sticker_chat_id: The name of the chat where stickers can be sent to get their file IDs.
     """
     # error handlers
     dispatcher.add_error_handler(hyphenation_error)
@@ -120,4 +123,4 @@ def setup_dispatcher(
 
     # Bot data
     dispatcher.bot_data[ADMIN_KEY] = admin_id
-    dispatcher.bot_data[STICKER_SET_NAME_KEY] = sticker_set_name
+    dispatcher.bot_data[STICKER_CHAT_ID_KEY] = sticker_chat_id

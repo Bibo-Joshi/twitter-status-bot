@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Methods for creating the stickers."""
 import datetime as dtm
+import logging
 from io import BytesIO
+from threading import Event
 from typing import Union, cast, Optional
 
 import pytz
@@ -28,6 +30,9 @@ from bot.constants import (
 from bot.userdata import CCT, UserData
 
 
+logger = logging.getLogger(__name__)
+
+
 class HyphenationError(Exception):
     """Custom exception class for hyphenation exceptions."""
 
@@ -37,6 +42,12 @@ class HyphenationError(Exception):
             "words may not be longer than 100 characters. Also, currently only "
             "English is properly supported for hyphenation."
         )
+
+
+def _check_event(event: Event = None) -> None:
+    if event and event.is_set():
+        logger.debug('Sticker creation terminated because event was set')
+        raise RuntimeError('Sticker creation terminated because event was set')
 
 
 def mask_circle_transparent(image: Union[Image.Image, str]) -> Image.Image:
@@ -86,13 +97,15 @@ def shorten_text(text: str, max_width: int, font: ImageFont.ImageFont) -> str:
     return short_text
 
 
-def build_footer(timezone: str = "Europe/Berlin") -> Image.Image:
+def build_footer(timezone: str = "Europe/Berlin", event: Event = None) -> Image.Image:
     """
     Creates the footer for the sticker by adding the current timestamp.
 
     Args:
         timezone: Optional. The timezone to use for the timestamp. Must be one of the timezones
           supported by ``pytz``. Defaults to ``'Europe/Berlin'``.
+        event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
+            parts of the footer creation and if the event is set, the creation will be terminated.
 
     Returns:
         :class:`PIL.Image.Image`: The footer as Pillow image.
@@ -104,6 +117,7 @@ def build_footer(timezone: str = "Europe/Berlin") -> Image.Image:
     top = 28
     left = 27
 
+    _check_event(event)
     image = Image.open(FOOTER_TEMPLATE)
     draw = ImageDraw.Draw(image)
     draw.text((left, top), date_string, fill=TEXT_SECONDARY, font=FOOTER_FONT)
@@ -111,7 +125,9 @@ def build_footer(timezone: str = "Europe/Berlin") -> Image.Image:
 
 
 def build_header(  # pylint: disable=R0914
-    user_data: UserData, user_picture: Image.Image = None
+    user_data: UserData,
+    user_picture: Image.Image = None,
+    event: Event = None,
 ) -> Image.Image:
     """
     Creates the header for the sticker customized for the given user. The header will be saved as
@@ -120,11 +136,13 @@ def build_header(  # pylint: disable=R0914
     Args:
         user_data: The user data for the user this header is build for.
         user_picture: Optional. The profile picture of the user. Defaults to the bots logo.
+        event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
+            parts of the header creation and if the event is set, the creation will be terminated.
 
     Returns:
         :class:`PIL.Image.Image`: The header as Pillow image.
     """
-
+    _check_event(event)
     # Get Background
     background: Image = Image.open(HEADER_TEMPLATE)
 
@@ -133,6 +151,7 @@ def build_header(  # pylint: disable=R0914
     up_top = 25
 
     if not user_picture:
+        _check_event(event)
         user_picture = mask_circle_transparent(FALLBACK_PROFILE_PICTURE)
 
     # crop a centered square
@@ -140,41 +159,48 @@ def build_header(  # pylint: disable=R0914
         side = min(user_picture.width, user_picture.height)
         left = (user_picture.width - side) // 2
         upper = (user_picture.height - side) // 2
+        _check_event(event)
         user_picture = user_picture.crop((left, upper, left + side, upper + side))
 
+    _check_event(event)
     # make it a circle an small
     user_picture = mask_circle_transparent(user_picture)
     user_picture.thumbnail((78, 78))
     background.alpha_composite(user_picture, (up_left, up_top))
+    draw = ImageDraw.Draw(background)
 
+    _check_event(event)
     # Add user name
     un_left = 118
     un_top = 30
-    draw = ImageDraw.Draw(background)
     user_name = shorten_text(cast(str, user_data.full_name), 314, USER_NAME_FONT)
     draw.text((un_left, un_top), user_name, fill=TEXT_MAIN, font=USER_NAME_FONT)
 
+    _check_event(event)
     # Add user handle
     uh_left = 118
     uh_top = 62
-    draw = ImageDraw.Draw(background)
     user_handle = shorten_text(
         f"@{user_data.username or user_data.first_name}", 370, USER_HANDLE_FONT
     )
     draw.text((uh_left, uh_top), user_handle, fill=TEXT_SECONDARY, font=USER_HANDLE_FONT)
 
+    _check_event(event)
     # Add verified symbol
     (un_width, _), _ = USER_NAME_FONT.font.getsize(user_name)
     v_left = un_left + un_width + 4
     v_top = 34
     background.alpha_composite(VERIFIED_IMAGE, (v_left, v_top))
 
+    _check_event(event)
     # Save for later use
     background.save(f"{HEADERS_DIRECTORY}/{user_data.user_id}.png")
     return background
 
 
-def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0914
+def get_header(  # pylint: disable = R0914
+    user: User, context: CCT, event: Event = None
+) -> Image.Image:
     """
     Gets the header for the sticker customized for the given user. The header either be loaded from
     file or created anew, if there is no header for the user or users info changed.
@@ -186,6 +212,8 @@ def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0
         context: The :class:`telegram.ext.CallbackContext` as provided by the
             :class:`telegram.ext.Dispatcher`. Used to check, if for the given user an up to date
             header already exists.
+        event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
+            parts of the header creation and if the event is set, the creation will be terminated.
 
     Returns:
         :class:`PIL.Image.Image`: The header as Pillow image.
@@ -194,6 +222,7 @@ def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0
     bot = context.bot
     user_data = cast(UserData, context.user_data)
 
+    _check_event(event)
     profile_photos = bot.get_user_profile_photos(user.id, limit=1)
     if profile_photos and profile_photos.total_count > 0:
         photo = profile_photos.photos[0][0]
@@ -208,6 +237,7 @@ def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0
         user_data.fallback_photo.file_unique_id if user_data.fallback_photo else None
     )
 
+    _check_event(event)
     if (
         user_data.full_name == user.full_name  # pylint: disable=R0916
         and user_data.username == user.username
@@ -216,9 +246,11 @@ def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0
         # Try to return saved header
         try:
             return Image.open(f"{HEADERS_DIRECTORY}/{user.id}.png")
-        except FileNotFoundError:
+        except Exception:  # pylint: disable=W0703
             # If saving failed, we need to create a new one
-            pass
+            logger.debug(
+                'Opening existing header for user %s failed. Building new header.', user.id
+            )
     else:
         drop_stored_stickers = True
 
@@ -226,10 +258,13 @@ def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0
     file_id = photo_file_id or fallback_file_id
     file_unique_id = photo_file_unique_id or fallback_unique_id
     if file_id:
+        _check_event(event)
         photo_file = bot.get_file(file_id)
         picture_stream = BytesIO()
+        _check_event(event)
         photo_file.download(out=picture_stream)
         picture_stream.seek(0)
+        _check_event(event)
         user_picture = Image.open(picture_stream)
     else:
         user_picture = None
@@ -237,15 +272,17 @@ def get_header(user: User, context: CCT) -> Image.Image:  # pylint: disable = R0
     user_data.update_user_info(user, photo_file_unique_id=file_unique_id)
     if drop_stored_stickers:
         user_data.sticker_file_ids.clear()
-    return build_header(user_data, user_picture)
+    return build_header(user_data, user_picture, event=event)
 
 
-def build_body(text: str) -> Image.Image:
+def build_body(text: str, event: Event = None) -> Image.Image:
     """
     Builds the body for the sticker by setting the given text.
 
     Args:
         text: The text to display.
+        event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
+            parts of the body creation and if the event is set, the creation will be terminated.
 
     Returns:
         :class:`PIL.Image.Image`: The body as Pillow image.
@@ -254,6 +291,7 @@ def build_body(text: str) -> Image.Image:
     max_pixels_per_line = 450
 
     def single_line_text(position, text_, font, background_):  # type: ignore
+        _check_event(event)
         _, height = font.getsize(text_)
         background_ = background_.resize((background_.width, height + top + 1))
         draw = ImageDraw.Draw(background_)
@@ -262,6 +300,7 @@ def build_body(text: str) -> Image.Image:
         return background_
 
     def multiline_text(position, text_, background_):  # type: ignore
+        _check_event(event)
         spacing = 4
         _, height = SMALL_TEXT_FONT.getsize_multiline(text_, spacing=spacing)
         background_ = background_.resize((background_.width, height - spacing))
@@ -270,6 +309,7 @@ def build_body(text: str) -> Image.Image:
 
         return background_
 
+    _check_event(event)
     background = Image.open(BODY_TEMPLATE)
     left = 27
 
@@ -303,22 +343,27 @@ def build_body(text: str) -> Image.Image:
     return background
 
 
-def build_sticker(text: str, user: User, context: CCT) -> Image.Image:
+def build_sticker(text: str, user: User, context: CCT, event: Event = None) -> Image.Image:
     """Builds the sticker.
 
     Arguments:
         text: Text of the tweet.
         user: The user the sticker is generated for.
         context: The callback context as provided by the dispatcher.
+        event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
+            parts of the sticker creation and if the event is set, the creation will be terminated.
     """
-    header = get_header(user, context)
-    body = build_body(text)
-    footer = build_footer()
+    header = get_header(user, context, event=event)
+    body = build_body(text, event=event)
+    footer = build_footer(event=event)
 
+    _check_event(event)
     sticker = Image.new("RGBA", (512, header.height + body.height + footer.height))
     sticker.paste(header, (0, 0))
     sticker.paste(body, (0, header.height))
     sticker.paste(footer, (0, header.height + body.height))
+
+    _check_event(event)
     sticker.thumbnail((512, 512))
 
     return sticker
