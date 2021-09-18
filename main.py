@@ -13,7 +13,7 @@ from bot.userdata import UserData
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
-    filename="tsb.log",
+    # filename="tsb.log",
 )
 aps_logger = logging.getLogger('apscheduler')
 aps_logger.setLevel(logging.WARNING)

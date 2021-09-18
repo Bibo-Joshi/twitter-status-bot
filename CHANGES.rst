@@ -2,6 +2,15 @@
 Changelog
 =========
 
+Version 2.2
+===========
+*Released 2021-09-18*
+
+**New Features:**
+
+* Select a custom timezone via ``/set_timezone``
+* Switch between left-to-right and right-to-left text via ``/toggle_text_direction``
+
 Version 2.1
 ===========
 *Released 2021-09-06*

@@ -17,6 +17,7 @@ from telegram.ext import (
 from bot.constants import ADMIN_KEY, STICKER_CHAT_ID_KEY
 from bot.deletesticker import delete_sticker_conversation
 from bot.setfallbackpicture import set_fallback_picture_conversation
+from bot.settimezone import build_set_timezone_conversation
 from bot.utils import default_message
 from bot.commands import (
     info,
@@ -24,6 +25,7 @@ from bot.commands import (
     toggle_store_stickers,
     show_fallback_picture,
     delete_fallback_picture,
+    toggle_text_direction,
 )
 from bot.error import hyphenation_error, error
 from bot.inline import inline, handle_chosen_inline_result
@@ -58,7 +60,7 @@ def setup_dispatcher(
     # Set up stats
     set_dispatcher(dispatcher)
     register_stats(
-        SimpleStats("ilq", lambda u: bool(u.inline_query and u.inline_query.query)),
+        SimpleStats("ilq", lambda u: bool(u.chosen_inline_result)),
         admin_id=admin_id,
     )
     register_stats(
@@ -75,8 +77,10 @@ def setup_dispatcher(
     # basic command handlers
     dispatcher.add_handler(CommandHandler(["start", "help"], info))
     dispatcher.add_handler(CommandHandler('toggle_store_stickers', toggle_store_stickers))
+    dispatcher.add_handler(CommandHandler('toggle_text_direction', toggle_text_direction))
     dispatcher.add_handler(delete_sticker_conversation)
     dispatcher.add_handler(set_fallback_picture_conversation)
+    dispatcher.add_handler(build_set_timezone_conversation(dispatcher.bot))
     dispatcher.add_handler(CommandHandler('delete_fallback_picture', delete_fallback_picture))
     dispatcher.add_handler(CommandHandler('show_fallback_picture', show_fallback_picture))
 
@@ -94,30 +98,30 @@ def setup_dispatcher(
     dispatcher.add_handler(ChosenInlineResultHandler(handle_chosen_inline_result))
 
     # Bot commands
-    dispatcher.bot.set_my_commands(
+    base_commands = [
+        ["help", "Displays a short info message about the Twitter Status Bot"],
+        ["start", 'See "/help"'],
+        ['toggle_store_stickers', '(De)activates the saving of stickers'],
+        ['delete_sticker', 'Deletes one specific stored sticker'],
+        ['set_fallback_picture', 'Sets fallback profile picture'],
+        ['delete_fallback_picture', 'Deletes fallback profile picture'],
+        ['show_fallback_picture', 'Shows current fallback profile picture'],
+        ['set_timezone', 'Sets the timezone used for the stickers'],
         [
-            ["help", "Displays a short info message about the Twitter Status Bot"],
-            ["start", 'See "/help"'],
-            ['toggle_store_stickers', '(De)activates the saving of stickers'],
-            ['delete_sticker', 'Deletes one specific stored sticker'],
-            ['set_fallback_picture', 'Sets fallback profile picture'],
-            ['delete_fallback_picture', 'Deletes fallback profile picture'],
-            ['show_fallback_picture', 'Shows current fallback profile picture'],
-        ]
-    )
-    # For the admin, we show stats commands
-    dispatcher.bot.set_my_commands(
-        [
-            ["ilq", "Show Statistics for inline requests"],
-            ["text", "Show Statistics for text requests"],
-            ["help", "Displays a short info message about the Twitter Status Bot"],
-            ["start", 'See "/help"'],
-            ['toggle_store_stickers', '(De)activates the saving of stickers'],
-            ['delete_sticker', 'Deletes one specific stored sticker'],
-            ['set_fallback_picture', 'Sets fallback profile picture'],
-            ['delete_fallback_picture', 'Deletes fallback profile picture'],
-            ['show_fallback_picture', 'Shows current fallback profile picture'],
+            'toggle_text_direction',
+            'Changes sticker text direction from right-to-left to left-to-right and vice versa',
         ],
+    ]
+    admin_commands = [
+        ["ilq", "Show Statistics for inline requests"],
+        ["text", "Show Statistics for text requests"],
+    ]
+
+    dispatcher.bot.set_my_commands(base_commands)
+    # For the admin, we show stats commands
+
+    dispatcher.bot.set_my_commands(
+        admin_commands + base_commands,
         scope=BotCommandScopeChat(chat_id=admin_id),
     )
 

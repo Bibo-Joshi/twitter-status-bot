@@ -8,7 +8,7 @@ from typing import Union, cast, Optional
 
 import pytz
 from telegram import User
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, features
 from textwrap2 import fill
 
 from bot.constants import (
@@ -26,11 +26,14 @@ from bot.constants import (
     BIG_TEXT_FONT,
     SMALL_TEXT_FONT,
     HYPHENATOR,
+    LTR,
 )
 from bot.userdata import CCT, UserData
 
 
 logger = logging.getLogger(__name__)
+
+TEXT_DIRECTION_SUPPORT = features.check('raqm')
 
 
 class HyphenationError(Exception):
@@ -97,7 +100,7 @@ def shorten_text(text: str, max_width: int, font: ImageFont.ImageFont) -> str:
     return short_text
 
 
-def build_footer(timezone: str = "Europe/Berlin", event: Event = None) -> Image.Image:
+def build_footer(timezone: str = "UTC", event: Event = None) -> Image.Image:
     """
     Creates the footer for the sticker by adding the current timestamp.
 
@@ -275,12 +278,14 @@ def get_header(  # pylint: disable = R0914
     return build_header(user_data, user_picture, event=event)
 
 
-def build_body(text: str, event: Event = None) -> Image.Image:
+def build_body(text: str, text_direction: str = LTR, event: Event = None) -> Image.Image:
     """
     Builds the body for the sticker by setting the given text.
 
     Args:
         text: The text to display.
+        text_direction: Optional. Direction of the text. Defaults to left-to-right. If libraqm
+            is not available, this setting will be ignored.
         event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
             parts of the body creation and if the event is set, the creation will be terminated.
 
@@ -290,12 +295,18 @@ def build_body(text: str, event: Event = None) -> Image.Image:
     max_chars_per_line = 26
     max_pixels_per_line = 450
 
+    kwargs = {'direction': text_direction} if TEXT_DIRECTION_SUPPORT else {}
+    left = 27 if text_direction == LTR else 512 - 27
+    kwargs['anchor'] = 'la' if text_direction == LTR else 'ra'
+    kwargs['align'] = 'left' if text_direction == LTR else 'right'
+    kwargs['fill'] = TEXT_MAIN
+
     def single_line_text(position, text_, font, background_):  # type: ignore
         _check_event(event)
         _, height = font.getsize(text_)
         background_ = background_.resize((background_.width, height + top + 1))
         draw = ImageDraw.Draw(background_)
-        draw.text(position, text_, fill=TEXT_MAIN, font=font)
+        draw.text(position, text_, font=font, **kwargs)
 
         return background_
 
@@ -305,13 +316,12 @@ def build_body(text: str, event: Event = None) -> Image.Image:
         _, height = SMALL_TEXT_FONT.getsize_multiline(text_, spacing=spacing)
         background_ = background_.resize((background_.width, height - spacing))
         draw = ImageDraw.Draw(background_)
-        draw.multiline_text(position, text_, fill=TEXT_MAIN, font=SMALL_TEXT_FONT, spacing=spacing)
+        draw.multiline_text(position, text_, font=SMALL_TEXT_FONT, spacing=spacing, **kwargs)
 
         return background_
 
     _check_event(event)
     background = Image.open(BODY_TEMPLATE)
-    left = 27
 
     if "\n" in text:
         top = -12
@@ -353,9 +363,10 @@ def build_sticker(text: str, user: User, context: CCT, event: Event = None) -> I
         event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
             parts of the sticker creation and if the event is set, the creation will be terminated.
     """
+    user_data = cast(UserData, context.user_data)
     header = get_header(user, context, event=event)
-    body = build_body(text, event=event)
-    footer = build_footer(event=event)
+    body = build_body(text, event=event, text_direction=user_data.text_direction)
+    footer = build_footer(event=event, timezone=user_data.tzinfo)
 
     _check_event(event)
     sticker = Image.new("RGBA", (512, header.height + body.height + footer.height))

@@ -33,6 +33,16 @@ You can also selectively delete only specific stickers via the ``/delete_sticker
 .. note::
    Stored stickers are dropped if you change your profile picture (see above).
 
+Managing Timezones
+------------------
+
+By default, the bot will print the timestamp of the current UTC time at tho bottom of the sticker. If you want to use a custom timezone, you can set it via the ``/set_timezone`` command.
+
+Managing Text Directions
+------------------------
+
+By default, the bot will print the text of the tweet from left to right. If you are using a right-to-left language, you can use the ``/toggle_text_direction`` command to change this behavior.
+
 Statistics
 ----------
 

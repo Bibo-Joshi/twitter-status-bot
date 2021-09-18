@@ -17,6 +17,9 @@ ADMIN_KEY: str = 'ADMIN_KEY'
 STICKER_CHAT_ID_KEY: str = 'STICKER_CHAT_ID_KEY'
 """:obj:`srt`: The name of the chat where stickers can be sent to get their file IDs is stored
 under this key in ``bot_data``."""
+REMOVE_KEYBOARD_KEY: str = 'REMOVE_KEYBOARD_KEY'
+""":obj:`str`: Store a message object in under this key in ``chat_data`` to remove its reply
+markup later on with :meth:`utils.remove_reply_markup`."""
 HOMEPAGE: str = "https://hirschheissich.gitlab.io/twitter-status-bot/"
 """:obj:`str`: Homepage of this bot."""
 TEMPLATE_DIRECTORY = f"{PATH_PREFIX}templates"
@@ -60,3 +63,7 @@ SMALL_TEXT_FONT = ImageFont.truetype(FONT_SEMI_BOLD, 36)
 """:class:`PIL.ImageFont.Font`: Font to use for small text in the body."""
 HYPHENATOR = Hyphenator("en_US")
 """:class:`PyHyphen.Hyphenator`: A hyphenator to use to wrap text."""
+LTR = 'ltr'
+""":obj:`str`: Text direction left to right."""
+RTL: str = 'rtl'
+""":obj:`str`: Text direction right to let."""

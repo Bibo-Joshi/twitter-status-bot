@@ -13,7 +13,7 @@ from telegram import (
 )
 
 from bot.utils import get_sticker_photo_stream
-from bot.constants import HOMEPAGE
+from bot.constants import HOMEPAGE, LTR, RTL
 from bot.twitter import HyphenationError
 from bot.userdata import CCT, UserData
 
@@ -82,8 +82,7 @@ def info(update: Update, context: CCT) -> None:
 
 
 def toggle_store_stickers(update: Update, context: CCT) -> None:
-    """
-    Returns some info about the bot.
+    """Toggles whether or not to store stickers for the user.
 
     Args:
         update: The Telegram update.
@@ -100,6 +99,23 @@ def toggle_store_stickers(update: Update, context: CCT) -> None:
         user_data.store_stickers = True
 
     message.reply_text(text)
+
+
+def toggle_text_direction(update: Update, context: CCT) -> None:
+    """Toggles whether the user wants to use left-to-right or right-to-left text.
+
+    Args:
+        update: The Telegram update.
+        context: The callback context as provided by the dispatcher.
+    """
+    user_data = cast(UserData, context.user_data)
+    message = cast(Message, update.effective_message)
+
+    mapping = {LTR: RTL, RTL: LTR}
+    user_data.text_direction = mapping[user_data.text_direction]
+    description = 'left-to-right' if user_data.text_direction == LTR else 'right-to-left'
+
+    message.reply_text(f'The sticker text will be set as {description} now.')
 
 
 def show_fallback_picture(update: Update, context: CCT) -> None:

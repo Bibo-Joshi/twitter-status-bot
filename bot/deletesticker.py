@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Conversation for deleting stored stickers."""
-from typing import cast
+from typing import cast, Dict
 
 from telegram import Update, Message, InlineKeyboardMarkup, InlineKeyboardButton, Sticker
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
 
+from bot.constants import REMOVE_KEYBOARD_KEY
 from bot.userdata import CCT, UserData
-from bot.utils import TIMEOUT_HANDLER, FALLBACK_HANDLER
+from bot.utils import TIMEOUT_HANDLER, FALLBACK_HANDLER, remove_reply_markup
 
 STATE = 42
 
@@ -32,12 +33,13 @@ def start(update: Update, context: CCT) -> int:
     if not user_data.sticker_file_ids:
         message.reply_text("I don't have any stickers stored for you.")
         return ConversationHandler.END
-    message.reply_text(
+    message = message.reply_text(
         "Please press the button below and select the sticker that you want to delete.",
         reply_markup=InlineKeyboardMarkup.from_button(
             InlineKeyboardButton(text='Click me 👆', switch_inline_query_current_chat='')
         ),
     )
+    cast(Dict, context.chat_data)[REMOVE_KEYBOARD_KEY] = message
     return STATE
 
 
@@ -63,6 +65,7 @@ def handle_sticker(update: Update, context: CCT) -> int:
     else:
         message.reply_text('Sticker successfully deleted.')
 
+    remove_reply_markup(context)
     return ConversationHandler.END
 
 

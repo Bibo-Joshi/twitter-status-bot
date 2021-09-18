@@ -2,4 +2,5 @@ python-telegram-bot>=13.7,<14.0
 Pillow==8.3.0
 PyHyphen==3.0.1
 pytz
+fuzzywuzzy==0.18.0
 git+https://gitlab.com/HirschHeissIch/ptbstats.git@v1.3.1
