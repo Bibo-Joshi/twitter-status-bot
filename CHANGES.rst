@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 2.2.1
+=============
+*Released 2021-09-18*
+
+Fixes some minor bugs.
+
 Version 2.2
 ===========
 *Released 2021-09-18*

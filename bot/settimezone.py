@@ -46,11 +46,8 @@ def start(update: Update, context: CCT) -> int:
         f"Your current timezone is: {user_data.tzinfo}. Please press the button below to "
         "select a new timezone. You can scroll through the available options or type something to "
         "narrow down the options.",
-        reply_markup=InlineKeyboardMarkup.from_row(
-            [
-                InlineKeyboardButton(text='Click me 👆', switch_inline_query_current_chat=''),
-                InlineKeyboardButton('udiarne', callback_data='udiaren'),
-            ]
+        reply_markup=InlineKeyboardMarkup.from_button(
+            InlineKeyboardButton(text='Click me 👆', switch_inline_query_current_chat=''),
         ),
     )
     cast(Dict, context.chat_data)[REMOVE_KEYBOARD_KEY] = message
@@ -84,6 +81,7 @@ def handle_inline_query(update: Update, _: CCT) -> int:
             for tz in timezones
         ],
         auto_pagination=True,
+        cache_time=0,
     )
 
     return STATE
