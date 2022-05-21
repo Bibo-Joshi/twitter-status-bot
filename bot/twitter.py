@@ -7,9 +7,9 @@ from io import BytesIO
 from typing import Optional, Union, cast
 
 import pytz
+from hyphen.textwrap2 import fill
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, features
 from telegram import User
-from hyphen.textwrap2 import fill
 
 from bot.constants import (
     BIG_TEXT_FONT,

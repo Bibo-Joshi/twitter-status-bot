@@ -28,7 +28,7 @@ repos:
         additional_dependencies:
         - python-telegram-bot==20.0a0
         - Pillow==9.1.1
-        - PyHyphen==3.0.1
+        - PyHyphen==4.0.3
         - pytz
         - thefuzz==0.19.0
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
@@ -40,7 +40,7 @@ repos:
         additional_dependencies:
         - python-telegram-bot==20.0a0
         - Pillow==9.1.1
-        - PyHyphen==3.0.1
+        - PyHyphen==4.0.3
         - pytz
         - thefuzz==0.19.0
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0

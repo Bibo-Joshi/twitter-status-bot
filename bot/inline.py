@@ -74,7 +74,6 @@ async def inline_task(update: Update, context: CCT, event: Event) -> None:
         # Answer the inline query
         await inline_query.answer(**kwargs, is_personal=True, auto_pagination=True, cache_time=0)
     except CancelledError:
-        print("I cancelled a task")
         pass
 
 
