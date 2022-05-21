@@ -35,14 +35,13 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx.ext.coverage",
-    "sphinx_rtd_theme",
     "sphinx_autodoc_typehints",
 ]
 
 # Use intersphinx to reference the python-telegram-bot docs
 intersphinx_mapping = {
-    "telegram": ("https://python-telegram-bot.readthedocs.io/en/latest/", None),
-    "https://docs.python.org/": None,
+    "telegram": ("https://docs.python-telegram-bot.org/en/v20.0a0/", None),
+    "https://docs.python.org/3/": None,
 }
 
 # Include special members in doc
@@ -66,9 +65,9 @@ exclude_patterns = []
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 html_theme_options = {
-    "style_nav_header_background": "#177fbfff",
+    "navigation_with_keys": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -84,15 +83,3 @@ html_logo = "../../logo/TwitterStatusBot-round.png"
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 html_favicon = "../../logo/TwitterStatusBot.ico"
-
-
-# Link to the correct file
-html_context = {
-    "display_gitlab": True,
-    "gitlab_host": "gitlab.com",
-    "gitlab_user": "HirschHeissIch",
-    "gitlab_repo": "twitter-status-bot",
-    "gitlab_version": "master",
-    "conf_py_path": "/docs/source/",
-    "source_suffix": ".rst",
-}

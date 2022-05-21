@@ -1,46 +1,42 @@
 #!/usr/bin/env python3
 """Conversation for deleting stored stickers."""
-from typing import cast, List
+from typing import List, cast
 
-from telegram import (
-    Update,
-    Message,
-    PhotoSize,
-)
-from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
+from telegram import Message, PhotoSize, Update
+from telegram.ext import CommandHandler, ConversationHandler, MessageHandler, filters
 
 from bot.userdata import CCT, UserData
-from bot.utils import TIMEOUT_HANDLER, FALLBACK_HANDLER
+from bot.utils import FALLBACK_HANDLER, TIMEOUT_HANDLER
 
 STATE = 42
 
 
-def start(update: Update, _: CCT) -> int:
+async def start(update: Update, _: CCT) -> int:
     """Starts the conversation and asks for the new picture..
 
     Args:
         update: The Telegram update.
-        _: The callback context as provided by the dispatcher.
+        _: The callback context as provided by the application.
 
     Returns:
         int: The next state.
     """
     message = cast(Message, update.effective_message)
-    message.reply_text(
-        'Please send me the picture that you want to use as fallback. Make sure to send it as '
-        'photo (compressed) instead of as document (uncompressed).\n\nNote that this photo will '
+    await message.reply_text(
+        "Please send me the picture that you want to use as fallback. Make sure to send it as "
+        "photo (compressed) instead of as document (uncompressed).\n\nNote that this photo will "
         "only be used if you don't have a profile picture or I can't see it due to your privacy "
-        'settings.'
+        "settings."
     )
     return STATE
 
 
-def handle_picture(update: Update, context: CCT) -> int:
+async def handle_picture(update: Update, context: CCT) -> int:
     """Handles the sticker input and deletes the sticker if possible.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
 
     Returns:
         int: The next state.
@@ -48,21 +44,23 @@ def handle_picture(update: Update, context: CCT) -> int:
     user_data = cast(UserData, context.user_data)
     message = cast(Message, update.effective_message)
     if message.document:
-        message.reply_text('Please send me the picture as compressed photo and not as document.')
+        await message.reply_text(
+            "Please send me the picture as compressed photo and not as document."
+        )
         return STATE
 
     photos = cast(List[PhotoSize], message.photo)
     assert len(photos) > 0
     user_data.update_fallback_photo(photos[-1])
-    message.reply_text('Fallback picture set.')
+    await message.reply_text("Fallback picture set.")
 
     return ConversationHandler.END
 
 
 set_fallback_picture_conversation = ConversationHandler(
-    entry_points=[CommandHandler('set_fallback_picture', start)],
+    entry_points=[CommandHandler("set_fallback_picture", start)],
     states={
-        STATE: [MessageHandler(Filters.photo, handle_picture)],
+        STATE: [MessageHandler(filters.PHOTO, handle_picture)],
         ConversationHandler.TIMEOUT: [TIMEOUT_HANDLER],
     },
     fallbacks=[FALLBACK_HANDLER],

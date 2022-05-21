@@ -1,0 +1,34 @@
+name: GitHub Pages
+on:
+  push:
+    branches:
+      - pages # For testing
+      - master
+
+jobs:
+  gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Initialize submodules
+        run:
+          git submodule update --init --recursive
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -W ignore -m pip install --upgrade pip
+          python -W ignore -m pip install -r requirements.txt
+          python -W ignore -m pip install -r docs/requirements-docs.txt
+      - name: Build Docs
+        run: sphinx-build docs/source docs/build/html
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages
+          folder: docs/build/html

@@ -2,6 +2,13 @@
 Changelog
 =========
 
+Version 3.0
+===========
+*Released 2022-05-22*
+
+* Upgrade ``python-telegram-bot`` to v20.0a0 introducing ``asyncio``.
+* Upgrade ``ptbstats`` to v2.0, which is not backwards compatible.
+
 Version 2.2.1
 =============
 *Released 2021-09-18*

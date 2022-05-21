@@ -1,51 +1,60 @@
 # Make sure that
-#   * the revs specified here match requirements-dev.txt
 #   * the additional_dependencies here match requirements.txt
+
+ci:
+  autoupdate_schedule: monthly
+
+default_language_version:
+  python: python3.7
+
 repos:
--   repo: https://github.com/psf/black
-    rev: 20.8b1
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
     hooks:
-    -   id: black
-        args:
-        - --diff
-        - --check
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
+      - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 4.0.1
     hooks:
-    -   id: flake8
-        language: python
--   repo: https://github.com/PyCQA/pylint
-    rev: v2.10.2
+      - id: flake8
+  - repo: https://github.com/PyCQA/pylint
+    rev: v2.13.8
     hooks:
-    -   id: pylint
+      - id: pylint
         files: ^(main|bot/\w*).py$
         args:
           - --rcfile=setup.cfg
+          #  run pylint across multiple cpu cores to speed it up-
+          - --jobs=0 # See https://pylint.pycqa.org/en/latest/user_guide/run.html?#parallel-execution to know more
         additional_dependencies:
-            - python-telegram-bot>=13.7,<14.0
-            - Pillow==8.3.0
-            - PyHyphen==3.0.1
-            - pytz
-            - fuzzywuzzy==0.18.0
-            - git+https://gitlab.com/HirschHeissIch/ptbstats.git@v1.3.1
-        language: python
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910
+        - python-telegram-bot==20.0a0
+        - Pillow==9.1.1
+        - PyHyphen==3.0.1
+        - pytz
+        - thefuzz==0.19.0
+        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.950
     hooks:
-    -   id: mypy
+      - id: mypy
         files: ^(main|bot/\w*).py$
-        language: python
         additional_dependencies:
-            - python-telegram-bot>=13.7,<14.0
-            - Pillow==8.3.0
-            - PyHyphen==3.0.1
-            - pytz
-            - fuzzywuzzy==0.18.0
-            - git+https://gitlab.com/HirschHeissIch/ptbstats.git@v1.3.1
--   repo: https://github.com/asottile/pyupgrade
-    rev: v2.25.0
+        - python-telegram-bot==20.0a0
+        - Pillow==9.1.1
+        - PyHyphen==3.0.1
+        - pytz
+        - thefuzz==0.19.0
+        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.32.0
     hooks:
-    -   id: pyupgrade
-        files: ^(main|bot/\w*).py$
+      - id: pyupgrade
         args:
-          - --py36-plus
+          - --py37-plus
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort
+        args:
+        - --diff
+        - --check

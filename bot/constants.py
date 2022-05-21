@@ -3,21 +3,21 @@
 from configparser import ConfigParser
 from pathlib import Path
 
-from PIL import Image, ImageFont
 from hyphen import Hyphenator
+from PIL import Image, ImageFont
 
 config = ConfigParser()
 config.read("bot.ini")
 
 # A little trick to get the corrects paths both at runtime and when building the docs
-PATH_PREFIX = '../' if Path('../headers').is_dir() else ''
+PATH_PREFIX = "../" if Path("../headers").is_dir() else ""
 
-ADMIN_KEY: str = 'ADMIN_KEY'
+ADMIN_KEY: str = "ADMIN_KEY"
 """:obj:`str`: The admins chat id is stored under this key in ``bot_data``."""
-STICKER_CHAT_ID_KEY: str = 'STICKER_CHAT_ID_KEY'
+STICKER_CHAT_ID_KEY: str = "STICKER_CHAT_ID_KEY"
 """:obj:`srt`: The name of the chat where stickers can be sent to get their file IDs is stored
 under this key in ``bot_data``."""
-REMOVE_KEYBOARD_KEY: str = 'REMOVE_KEYBOARD_KEY'
+REMOVE_KEYBOARD_KEY: str = "REMOVE_KEYBOARD_KEY"
 """:obj:`str`: Store a message object in under this key in ``chat_data`` to remove its reply
 markup later on with :meth:`utils.remove_reply_markup`."""
 HOMEPAGE: str = "https://hirschheissich.gitlab.io/twitter-status-bot/"
@@ -63,7 +63,7 @@ SMALL_TEXT_FONT = ImageFont.truetype(FONT_SEMI_BOLD, 36)
 """:class:`PIL.ImageFont.Font`: Font to use for small text in the body."""
 HYPHENATOR = Hyphenator("en_US")
 """:class:`PyHyphen.Hyphenator`: A hyphenator to use to wrap text."""
-LTR = 'ltr'
+LTR = "ltr"
 """:obj:`str`: Text direction left to right."""
-RTL: str = 'rtl'
+RTL: str = "rtl"
 """:obj:`str`: Text direction right to let."""

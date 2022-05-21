@@ -29,6 +29,10 @@ Twitter Status Bot
    :target: https://t.me/TwitterStatusBot
    :alt: Chat On Telegram
 
+.. image:: https://results.pre-commit.ci/badge/github/Bibo-Joshi/twitter-status-bot/main.svg
+   :target: https://results.pre-commit.ci/latest/github/Bibo-Joshi/twitter-status-bot/main
+   :alt: pre-commit.ci status
+
 »Twitter Status Bot« is a simple Telegram Bot that let's you create stickers looking like Tweets on the fly.
 You can find it at `@TwitterStatusBot`_.
 Inspired by this `sticker set`_ by `@AboutTheDot`_.

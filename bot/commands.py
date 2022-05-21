@@ -2,45 +2,38 @@
 """Methods for simple commands."""
 from typing import cast
 
-from telegram import (
-    Update,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    Message,
-    User,
-    ChatAction,
-    Sticker,
-)
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Message, Sticker, Update, User
+from telegram.constants import ChatAction
 
-from bot.utils import get_sticker_photo_stream
 from bot.constants import HOMEPAGE, LTR, RTL
 from bot.twitter import HyphenationError
 from bot.userdata import CCT, UserData
+from bot.utils import get_sticker_photo_stream
 
 
-def sticker_message(update: Update, context: CCT) -> None:
+async def sticker_message(update: Update, context: CCT) -> None:
     """
     Answers a text message by providing the requested sticker.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     msg = cast(Message, update.effective_message)
     user = cast(User, update.effective_user)
-    context.bot.send_chat_action(user.id, ChatAction.UPLOAD_PHOTO)
-    stream = get_sticker_photo_stream(cast(str, msg.text), user, context)
-    sticker = cast(Sticker, msg.reply_sticker(stream).sticker)
+    context.application.create_task(context.bot.send_chat_action(user.id, ChatAction.UPLOAD_PHOTO))
+    stream = await get_sticker_photo_stream(cast(str, msg.text), user, context)
+    sticker = cast(Sticker, (await msg.reply_sticker(stream)).sticker)
     cast(UserData, context.user_data).sticker_file_ids[sticker.file_unique_id] = sticker.file_id
 
 
-def info(update: Update, context: CCT) -> None:
+async def info(update: Update, context: CCT) -> None:
     """
     Returns some info about the bot.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     if context.args:
         text = str(HyphenationError())
@@ -74,19 +67,19 @@ def info(update: Update, context: CCT) -> None:
                     "News Channel 📣",
                     url="https://t.me/BotChangelogs",
                 ),
-                InlineKeyboardButton("Inline Mode ✍️", switch_inline_query=''),
+                InlineKeyboardButton("Inline Mode ✍️", switch_inline_query=""),
             ]
         )
 
-    cast(Message, update.effective_message).reply_text(text, reply_markup=keyboard)
+    await cast(Message, update.effective_message).reply_text(text, reply_markup=keyboard)
 
 
-def toggle_store_stickers(update: Update, context: CCT) -> None:
+async def toggle_store_stickers(update: Update, context: CCT) -> None:
     """Toggles whether or not to store stickers for the user.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     user_data = cast(UserData, context.user_data)
     message = cast(Message, update.effective_message)
@@ -98,60 +91,62 @@ def toggle_store_stickers(update: Update, context: CCT) -> None:
         text = "Sent stickers be stored. will from now."
         user_data.store_stickers = True
 
-    message.reply_text(text)
+    await message.reply_text(text)
 
 
-def toggle_text_direction(update: Update, context: CCT) -> None:
+async def toggle_text_direction(update: Update, context: CCT) -> None:
     """Toggles whether the user wants to use left-to-right or right-to-left text.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     user_data = cast(UserData, context.user_data)
     message = cast(Message, update.effective_message)
 
     mapping = {LTR: RTL, RTL: LTR}
     user_data.text_direction = mapping[user_data.text_direction]
-    description = 'left-to-right' if user_data.text_direction == LTR else 'right-to-left'
+    description = "left-to-right" if user_data.text_direction == LTR else "right-to-left"
 
-    message.reply_text(f'The sticker text will be set as {description} now.')
+    await message.reply_text(f"The sticker text will be set as {description} now.")
 
 
-def show_fallback_picture(update: Update, context: CCT) -> None:
+async def show_fallback_picture(update: Update, context: CCT) -> None:
     """Shows the users current fallback profile picture, if set.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     user_data = cast(UserData, context.user_data)
     message = cast(Message, update.effective_message)
     if not user_data.fallback_photo:
-        message.reply_text(
+        await message.reply_text(
             "You don't have a fallback picture set. Use /set_fallback_picture to set one."
         )
     else:
-        message.reply_photo(
+        await message.reply_photo(
             user_data.fallback_photo.file_id,
-            caption='This is your current fallback profile picture. You can delete it with '
-            '/delete_fallback_picture or set a new one with /set_fallback_picture.',
+            caption="This is your current fallback profile picture. You can delete it with "
+            "/delete_fallback_picture or set a new one with /set_fallback_picture.",
         )
 
 
-def delete_fallback_picture(update: Update, context: CCT) -> None:
+async def delete_fallback_picture(update: Update, context: CCT) -> None:
     """Deletes the users current fallback profile picture, if set.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     user_data = cast(UserData, context.user_data)
     message = cast(Message, update.effective_message)
     if not user_data.fallback_photo:
-        message.reply_text(
+        await message.reply_text(
             "You don't have a fallback picture set. Use /set_fallback_picture to set one."
         )
     else:
         user_data.update_fallback_photo(None)
-        message.reply_text('Fallback picture deleted. Use /set_fallback_picture to set a new one.')
+        await message.reply_text(
+            "Fallback picture deleted. Use /set_fallback_picture to set a new one."
+        )

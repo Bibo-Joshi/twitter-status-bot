@@ -7,45 +7,43 @@ import traceback
 from typing import cast
 
 from telegram import Update
-from telegram.error import BadRequest, RetryAfter, Unauthorized
-from telegram.utils.helpers import mention_html
+from telegram.error import BadRequest, Forbidden, RetryAfter
 
 from bot.constants import ADMIN_KEY
 from bot.twitter import HyphenationError
 from bot.userdata import CCT
 
-
 logger = logging.getLogger(__name__)
 
 
-def hyphenation_error(update: object, context: CCT) -> None:
+async def hyphenation_error(update: object, context: CCT) -> None:
     """Handles hyphenation errors by informing the triggering user about them.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     if not isinstance(context.error, HyphenationError) or not isinstance(update, Update):
         return
 
     if update.inline_query:
-        update.inline_query.answer(
+        await update.inline_query.answer(
             results=[],
             switch_pm_text="Click me! 👆",
             switch_pm_parameter="hyphenation_error",
         )
         return
     if update.effective_message:
-        update.effective_message.reply_text(str(context.error))
+        await update.effective_message.reply_text(str(context.error))
 
 
-def error(update: object, context: CCT) -> None:
+async def error(update: object, context: CCT) -> None:
     """Informs the originator of the update that an error occurred and forwards the traceback to
     the admin.
 
     Args:
         update: The Telegram update.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
     """
     admin_id = cast(int, context.bot_data[ADMIN_KEY])
 
@@ -60,7 +58,7 @@ def error(update: object, context: CCT) -> None:
 
     if (
         isinstance(context.error, BadRequest) and "Query is too old" in str(context.error)
-    ) or isinstance(context.error, Unauthorized):
+    ) or isinstance(context.error, Forbidden):
         return
 
     if isinstance(context.error, RetryAfter):
@@ -70,7 +68,7 @@ def error(update: object, context: CCT) -> None:
     # Inform sender of update, that something went wrong
     if isinstance(update, Update) and update.effective_message:
         text = "Something went wrong 😟. I informed the admin 🤓."
-        update.effective_message.reply_text(text)
+        await update.effective_message.reply_text(text)
 
     # Get traceback
     tb_list = traceback.format_exception(None, context.error, context.error.__traceback__)
@@ -80,9 +78,7 @@ def error(update: object, context: CCT) -> None:
     payload = ""
     if isinstance(update, Update):
         if update.effective_user:
-            payload += " with the user {}".format(
-                mention_html(update.effective_user.id, update.effective_user.first_name)
-            )
+            payload += f" with the user {update.effective_user.mention_html()}"
         if update.effective_chat and update.effective_chat.username:
             payload += f" (@{html.escape(update.effective_chat.username)})"
         if update.poll:
@@ -93,4 +89,4 @@ def error(update: object, context: CCT) -> None:
     )
 
     # Send to admin
-    context.bot.send_message(admin_id, text)
+    await context.bot.send_message(admin_id, text)

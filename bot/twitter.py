@@ -2,38 +2,37 @@
 """Methods for creating the stickers."""
 import datetime as dtm
 import logging
+from asyncio import Event
 from io import BytesIO
-from threading import Event
-from typing import Union, cast, Optional
+from typing import Optional, Union, cast
 
 import pytz
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, features
 from telegram import User
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, features
-from textwrap2 import fill
+from hyphen.textwrap2 import fill
 
 from bot.constants import (
-    HEADER_TEMPLATE,
-    FOOTER_TEMPLATE,
-    BODY_TEMPLATE,
-    VERIFIED_IMAGE,
-    TEXT_MAIN,
-    TEXT_SECONDARY,
-    FALLBACK_PROFILE_PICTURE,
-    HEADERS_DIRECTORY,
-    FOOTER_FONT,
-    USER_NAME_FONT,
-    USER_HANDLE_FONT,
     BIG_TEXT_FONT,
-    SMALL_TEXT_FONT,
+    BODY_TEMPLATE,
+    FALLBACK_PROFILE_PICTURE,
+    FOOTER_FONT,
+    FOOTER_TEMPLATE,
+    HEADER_TEMPLATE,
+    HEADERS_DIRECTORY,
     HYPHENATOR,
     LTR,
+    SMALL_TEXT_FONT,
+    TEXT_MAIN,
+    TEXT_SECONDARY,
+    USER_HANDLE_FONT,
+    USER_NAME_FONT,
+    VERIFIED_IMAGE,
 )
 from bot.userdata import CCT, UserData
 
-
 logger = logging.getLogger(__name__)
 
-TEXT_DIRECTION_SUPPORT = features.check('raqm')
+TEXT_DIRECTION_SUPPORT = features.check("raqm")
 
 
 class HyphenationError(Exception):
@@ -49,8 +48,8 @@ class HyphenationError(Exception):
 
 def _check_event(event: Event = None) -> None:
     if event and event.is_set():
-        logger.debug('Sticker creation terminated because event was set')
-        raise RuntimeError('Sticker creation terminated because event was set')
+        logger.debug("Sticker creation terminated because event was set")
+        raise RuntimeError("Sticker creation terminated because event was set")
 
 
 def mask_circle_transparent(image: Union[Image.Image, str]) -> Image.Image:
@@ -201,7 +200,7 @@ def build_header(  # pylint: disable=R0914
     return background
 
 
-def get_header(  # pylint: disable = R0914
+async def get_header(  # pylint: disable = R0914
     user: User, context: CCT, event: Event = None
 ) -> Image.Image:
     """
@@ -226,11 +225,10 @@ def get_header(  # pylint: disable = R0914
     user_data = cast(UserData, context.user_data)
 
     _check_event(event)
-    profile_photos = bot.get_user_profile_photos(user.id, limit=1)
-    if profile_photos and profile_photos.total_count > 0:
-        photo = profile_photos.photos[0][0]
-        photo_file_id: Optional[str] = photo.file_id
-        photo_file_unique_id: Optional[str] = photo.file_unique_id
+    chat_photo = (await bot.get_chat(user.id)).photo
+    if chat_photo:
+        photo_file_id: Optional[str] = chat_photo.small_file_id
+        photo_file_unique_id: Optional[str] = chat_photo.small_file_unique_id
     else:
         photo_file_id = None
         photo_file_unique_id = None
@@ -252,7 +250,7 @@ def get_header(  # pylint: disable = R0914
         except Exception:  # pylint: disable=W0703
             # If saving failed, we need to create a new one
             logger.debug(
-                'Opening existing header for user %s failed. Building new header.', user.id
+                "Opening existing header for user %s failed. Building new header.", user.id
             )
     else:
         drop_stored_stickers = True
@@ -262,10 +260,10 @@ def get_header(  # pylint: disable = R0914
     file_unique_id = photo_file_unique_id or fallback_unique_id
     if file_id:
         _check_event(event)
-        photo_file = bot.get_file(file_id)
+        photo_file = await bot.get_file(file_id)
         picture_stream = BytesIO()
         _check_event(event)
-        photo_file.download(out=picture_stream)
+        await photo_file.download(out=picture_stream)
         picture_stream.seek(0)
         _check_event(event)
         user_picture = Image.open(picture_stream)
@@ -295,11 +293,11 @@ def build_body(text: str, text_direction: str = LTR, event: Event = None) -> Ima
     max_chars_per_line = 26
     max_pixels_per_line = 450
 
-    kwargs = {'direction': text_direction} if TEXT_DIRECTION_SUPPORT else {}
+    kwargs = {"direction": text_direction} if TEXT_DIRECTION_SUPPORT else {}
     left = 27 if text_direction == LTR else 512 - 27
-    kwargs['anchor'] = 'la' if text_direction == LTR else 'ra'
-    kwargs['align'] = 'left' if text_direction == LTR else 'right'
-    kwargs['fill'] = TEXT_MAIN
+    kwargs["anchor"] = "la" if text_direction == LTR else "ra"
+    kwargs["align"] = "left" if text_direction == LTR else "right"
+    kwargs["fill"] = TEXT_MAIN
 
     def single_line_text(position, text_, font, background_):  # type: ignore
         _check_event(event)
@@ -353,18 +351,18 @@ def build_body(text: str, text_direction: str = LTR, event: Event = None) -> Ima
     return background
 
 
-def build_sticker(text: str, user: User, context: CCT, event: Event = None) -> Image.Image:
+async def build_sticker(text: str, user: User, context: CCT, event: Event = None) -> Image.Image:
     """Builds the sticker.
 
     Arguments:
         text: Text of the tweet.
         user: The user the sticker is generated for.
-        context: The callback context as provided by the dispatcher.
+        context: The callback context as provided by the application.
         event: Optional. If passed, ``event.is_set()`` will be checked before the time consuming
             parts of the sticker creation and if the event is set, the creation will be terminated.
     """
     user_data = cast(UserData, context.user_data)
-    header = get_header(user, context, event=event)
+    header = await get_header(user, context, event=event)
     body = build_body(text, event=event, text_direction=user_data.text_direction)
     footer = build_footer(event=event, timezone=user_data.tzinfo)
 
