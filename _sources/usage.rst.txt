@@ -46,7 +46,7 @@ By default, the bot will print the text of the tweet from left to right. If you 
 Statistics
 ----------
 
-This bot uses the `ptbstats <https://hirschheissich.gitlab.io/ptbstats/>`_ plugin to make some usage statistics
+This bot uses the `ptbstats <https://bibo-joshi.github.io/ptbstats/>`_ plugin to make some usage statistics
 available. The commands ``/text`` and ``/ilq`` will provide statistics on all stickers generated in private chat
 with the bot and via inline queries, respectively.
 
