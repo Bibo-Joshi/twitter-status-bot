@@ -20,7 +20,7 @@ under this key in ``bot_data``."""
 REMOVE_KEYBOARD_KEY: str = "REMOVE_KEYBOARD_KEY"
 """:obj:`str`: Store a message object in under this key in ``chat_data`` to remove its reply
 markup later on with :meth:`utils.remove_reply_markup`."""
-HOMEPAGE: str = "https://hirschheissich.gitlab.io/twitter-status-bot/"
+HOMEPAGE: str = "https://bibo-joshi.github.io/twitter-status-bot/"
 """:obj:`str`: Homepage of this bot."""
 TEMPLATE_DIRECTORY = f"{PATH_PREFIX}templates"
 """:obj:`str`: Name of the directory containing the templates."""

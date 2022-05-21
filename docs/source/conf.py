@@ -18,10 +18,12 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 # -- Project information -----------------------------------------------------
 
-project = "Image 2 Sticker Bot"
+project = "Twitter Status Bot"
 copyright = "2020, Hinrich Mahler"
 author = "Hinrich Mahler"
 master_doc = "index"
+version = "3.0"
+release = "3.0"
 
 
 # -- General configuration ---------------------------------------------------

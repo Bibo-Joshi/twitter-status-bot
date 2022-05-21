@@ -103,7 +103,7 @@ Version 1.4
 
 **Enhancements:**
 
-* Include the `ptbstats <https://hirschheissich.gitlab.io/ptbstats/>`_ plugin for statistics
+* Include the `ptbstats <https://bibo-joshi.github.io/ptbstats/>`_ plugin for statistics
 
 Version 1.3
 ===========
