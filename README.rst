@@ -25,7 +25,7 @@ Twitter Status Bot
    :target: https://github.com/psf/black
    :alt: Code Style Black
 
-.. image:: https://img.shields.io/badge/chat%20on-Telegram-blue.svg?logo=Telegram
+.. image:: https://img.shields.io/badge/use%20on-Telegram-blue.svg?logo=Telegram
    :target: https://t.me/TwitterStatusBot
    :alt: Use On Telegram
 
