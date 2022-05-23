@@ -27,7 +27,7 @@ Twitter Status Bot
 
 .. image:: https://img.shields.io/badge/chat%20on-Telegram-blue.svg?logo=Telegram
    :target: https://t.me/TwitterStatusBot
-   :alt: Chat On Telegram
+   :alt: Use On Telegram
 
 .. image:: https://results.pre-commit.ci/badge/github/Bibo-Joshi/twitter-status-bot/main.svg
    :target: https://results.pre-commit.ci/latest/github/Bibo-Joshi/twitter-status-bot/main
