@@ -95,7 +95,7 @@ async def _setup_application(
     )
 
     # basic command handlers
-    application.add_handler(CommandHandler(["start", "help"], info))
+    application.add_handler(CommandHandler(["start", "help", "info"], info))
     application.add_handler(CommandHandler("toggle_store_stickers", toggle_store_stickers))
     application.add_handler(CommandHandler("toggle_text_direction", toggle_text_direction))
     application.add_handler(delete_sticker_conversation)
