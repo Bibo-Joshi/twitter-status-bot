@@ -121,6 +121,7 @@ async def _setup_application(
     base_commands = [
         ["help", "Displays a short info message about the Twitter Status Bot"],
         ["start", 'See "/help"'],
+        ["info", 'Same as "/help"'],
         ["toggle_store_stickers", "(De)activates the saving of stickers"],
         ["delete_sticker", "Deletes one specific stored sticker"],
         ["set_fallback_picture", "Sets fallback profile picture"],
