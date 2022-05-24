@@ -95,7 +95,7 @@ async def _setup_application(
     )
 
     # basic command handlers
-    application.add_handler(CommandHandler(["start", "help"], info))
+    application.add_handler(CommandHandler(["start", "help", "info"], info))
     application.add_handler(CommandHandler("toggle_store_stickers", toggle_store_stickers))
     application.add_handler(CommandHandler("toggle_text_direction", toggle_text_direction))
     application.add_handler(delete_sticker_conversation)
@@ -121,6 +121,7 @@ async def _setup_application(
     base_commands = [
         ["help", "Displays a short info message about the Twitter Status Bot"],
         ["start", 'See "/help"'],
+        ["info", 'Same as "/help"'],
         ["toggle_store_stickers", "(De)activates the saving of stickers"],
         ["delete_sticker", "Deletes one specific stored sticker"],
         ["set_fallback_picture", "Sets fallback profile picture"],
