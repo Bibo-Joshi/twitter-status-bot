@@ -45,7 +45,7 @@ async def default_message(update: Update, _: CCT) -> None:
         _: The callback context as provided by the application.
     """
     await cast(Message, update.effective_message).reply_text(
-        "Sorry, but I can only text messages. " 'Send "/help" for more information.'
+        "Sorry, but I can only text messages. Send '/help' for more information."
     )
 
 
