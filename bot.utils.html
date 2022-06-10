@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Hosting this bot" href="hosting.html" /><link rel="prev" title="bot.userdata Module" href="bot.userdata.html" />
 
-    <link rel="shortcut icon" href="_static/TwitterStatusBot.ico"/><meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <link rel="shortcut icon" href="_static/TwitterStatusBot.ico"/><meta name="generator" content="sphinx-5.0.1, furo 2022.06.04.1"/>
         <title>bot.utils Module - Twitter Status Bot 3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -202,7 +202,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -217,7 +218,7 @@
         </div>
         <article role="main">
           <section id="bot-utils-module">
-<h1>bot.utils Module<a class="headerlink" href="#bot-utils-module" title="Permalink to this headline">#</a></h1>
+<h1>bot.utils Module<a class="headerlink" href="#bot-utils-module" title="Permalink to this heading">#</a></h1>
 <p>Utility methods for the bot functionality.</p>
 <dl class="py data">
 <dt class="sig sig-object py">
@@ -225,84 +226,89 @@
 <dd><p>A handler that can be used in the fallbacks for
 conversations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.typehandler.html#telegram.ext.TypeHandler" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">telegram.ext.TypeHandler</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">bot.utils.</span></span><span class="sig-name descname"><span class="pre">TIMEOUT_HANDLER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;telegram.ext._typehandler.TypeHandler</span> <span class="pre">object&gt;</span></em></dt>
 <dd><p>A handler that can be used in the timeout state for
 conversations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.typehandler.html#telegram.ext.TypeHandler" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">telegram.ext.TypeHandler</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bot.utils.</span></span><span class="sig-name descname"><span class="pre">conversation_fallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Informs the user that the input was invalid, calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_reply_markup()</span></code> and
 ends the conversation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>update</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.update.html#telegram.Update" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code></a>) – The Telegram update.</p></li>
 <li><p><strong>context</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.callbackcontext.html#telegram.ext.CallbackContext" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallbackContext</span></code></a>[<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.extbot.html#telegram.ext.ExtBot" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtBot</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – The callback context as provided by the application.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The next state.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bot.utils.</span></span><span class="sig-name descname"><span class="pre">conversation_timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Informs the user that the operation has timed out, calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_reply_markup()</span></code> and
 ends the conversation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>update</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.update.html#telegram.Update" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code></a>) – The Telegram update.</p></li>
 <li><p><strong>context</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.callbackcontext.html#telegram.ext.CallbackContext" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallbackContext</span></code></a>[<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.extbot.html#telegram.ext.ExtBot" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtBot</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – The callback context as provided by the application.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.conversationhandler.html#telegram.ext.ConversationHandler.END" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">telegram.ext.ConversationHandler.END</span></code></a>.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bot.utils.</span></span><span class="sig-name descname"><span class="pre">default_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Answers any message with a note that it could not be parsed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>update</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.update.html#telegram.Update" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Update</span></code></a>) – The Telegram update.</p></li>
 <li><p><strong>_</strong> – The callback context as provided by the application.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bot.utils.</span></span><span class="sig-name descname"><span class="pre">get_sticker_photo_stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Gives the sticker ID for the requested sticker.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The text to display on the tweet.</p></li>
 <li><p><strong>user</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.user.html#telegram.User" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>) – The user the tweet is created for.</p></li>
@@ -311,28 +317,30 @@ ends the conversation.</p>
 parts of the sticker creation and if the event is set, the creation will be terminated.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The stickers unique file ID and file ID</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bot.utils.</span></span><span class="sig-name descname"><span class="pre">remove_reply_markup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Removes the reply markup of the message stored in <code class="docutils literal notranslate"><span class="pre">context.chat_data[REMOVE_KEYBOARD]</span></code>,
 if any.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>context</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.callbackcontext.html#telegram.ext.CallbackContext" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallbackContext</span></code></a>[<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.extbot.html#telegram.ext.ExtBot" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtBot</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – The callback context as provided by the application.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 
         </article>
@@ -389,6 +397,7 @@ if any.</p>
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
     </body>
