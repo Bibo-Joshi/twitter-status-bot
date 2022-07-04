@@ -9,7 +9,7 @@ default_language_version:
 
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 22.6.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/flake8
@@ -17,7 +17,7 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/pylint
-    rev: v2.14.1
+    rev: v2.14.4
     hooks:
       - id: pylint
         files: ^(main|bot/\w*).py$
