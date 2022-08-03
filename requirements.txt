@@ -1,4 +1,4 @@
-python-telegram-bot==20.0a0
+python-telegram-bot==20.0a2
 Pillow==9.2.0
 PyHyphen==4.0.3
 pytz
