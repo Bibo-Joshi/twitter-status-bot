@@ -2,6 +2,7 @@
 """Methods for the inline mode."""
 import logging
 from asyncio import CancelledError, Event
+from contextlib import suppress
 from typing import Any, Dict, Union, cast
 from uuid import uuid4
 
@@ -36,7 +37,7 @@ async def inline_task(update: Update, context: CCT, event: Event) -> None:
         event: ``event.is_set()`` will be checked before the time consuming
             parts of the sticker creation and if the event is set, the creation will be terminated.
     """
-    try:
+    with suppress(CancelledError):  # suppress the know error
         inline_query = cast(InlineQuery, update.inline_query)
         user_data = cast(UserData, context.user_data)
         sticker_chat_id = cast(Union[int, str], context.bot_data[STICKER_CHAT_ID_KEY])
@@ -73,8 +74,6 @@ async def inline_task(update: Update, context: CCT, event: Event) -> None:
         _check_event(event)
         # Answer the inline query
         await inline_query.answer(**kwargs, is_personal=True, auto_pagination=True, cache_time=0)
-    except CancelledError:
-        pass
 
 
 async def inline(update: Update, context: CCT) -> None:
