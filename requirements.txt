@@ -1,5 +1,5 @@
 python-telegram-bot==20.0a0
-Pillow==9.2.0
+Pillow==9.3.0
 PyHyphen==4.0.3
 pytz
 thefuzz==0.19.0
