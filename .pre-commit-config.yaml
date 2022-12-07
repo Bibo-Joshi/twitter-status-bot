@@ -4,20 +4,17 @@
 ci:
   autoupdate_schedule: monthly
 
-default_language_version:
-  python: python3.7
-
 repos:
   - repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/flake8
-    rev: 5.0.4
+    rev: 6.0.0
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/pylint
-    rev: v2.15.5
+    rev: v2.15.8
     hooks:
       - id: pylint
         files: ^(main|bot/\w*).py$
@@ -33,7 +30,7 @@ repos:
         - thefuzz==0.19.0
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.982
+    rev: v0.991
     hooks:
       - id: mypy
         files: ^(main|bot/\w*).py$
@@ -45,7 +42,7 @@ repos:
         - thefuzz==0.19.0
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.2.0
+    rev: v3.3.0
     hooks:
       - id: pyupgrade
         args:
