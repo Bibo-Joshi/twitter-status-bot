@@ -263,7 +263,7 @@ async def get_header(  # pylint: disable = R0914
         photo_file = await bot.get_file(file_id)
         picture_stream = BytesIO()
         _check_event(event)
-        await photo_file.download(out=picture_stream)
+        await photo_file.download_to_memory(out=picture_stream)
         picture_stream.seek(0)
         _check_event(event)
         user_picture = Image.open(picture_stream)

@@ -23,24 +23,24 @@ repos:
           #  run pylint across multiple cpu cores to speed it up-
           - --jobs=0 # See https://pylint.pycqa.org/en/latest/user_guide/run.html?#parallel-execution to know more
         additional_dependencies:
-        - python-telegram-bot==20.0a0
-        - Pillow==9.1.1
+        - python-telegram-bot[rate-limiter]~=20.0
+        - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
-        - thefuzz==0.19.0
-        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
+        - thefuzz~=0.19
+        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v0.991
     hooks:
       - id: mypy
         files: ^(main|bot/\w*).py$
         additional_dependencies:
-        - python-telegram-bot==20.0a0
-        - Pillow==9.1.1
+        - python-telegram-bot[rate-limiter]~=20.0
+        - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
-        - thefuzz==0.19.0
-        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0
+        - thefuzz~=0.19
+        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
     hooks:
@@ -55,3 +55,14 @@ repos:
         args:
         - --diff
         - --check
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.210
+    hooks:
+      - id: ruff
+        additional_dependencies:
+        - python-telegram-bot[rate-limiter]~=20.0
+        - Pillow~=9.3
+        - PyHyphen==4.0.3
+        - pytz
+        - thefuzz~=0.19
+        - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1

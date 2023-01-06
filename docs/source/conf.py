@@ -22,8 +22,8 @@ project = "Twitter Status Bot"
 copyright = "2020, Hinrich Mahler"
 author = "Hinrich Mahler"
 master_doc = "index"
-version = "3.0"
-release = "3.0"
+version = "3.1"
+release = "3.1"
 
 
 # -- General configuration ---------------------------------------------------
