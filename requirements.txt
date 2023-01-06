@@ -1,6 +1,6 @@
-python-telegram-bot==20.0a0
-Pillow==9.3.0
+python-telegram-bot[rate-limiter]~=20.0
+Pillow~=9.3
 PyHyphen==4.0.3
 pytz
-thefuzz==0.19.0
-git+https://github.com/Bibo-Joshi/ptbstats.git@v2.0.2
+thefuzz~=0.19
+git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1

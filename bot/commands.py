@@ -24,7 +24,9 @@ async def sticker_message(update: Update, context: CCT) -> None:
     context.application.create_task(context.bot.send_chat_action(user.id, ChatAction.UPLOAD_PHOTO))
     stream = await get_sticker_photo_stream(cast(str, msg.text), user, context)
     sticker = cast(Sticker, (await msg.reply_sticker(stream)).sticker)
-    cast(UserData, context.user_data).sticker_file_ids[sticker.file_unique_id] = sticker.file_id
+    user_data = cast(UserData, context.user_data)
+    if user_data.store_stickers:
+        user_data.sticker_file_ids[sticker.file_unique_id] = sticker.file_id
 
 
 async def info(update: Update, context: CCT) -> None:

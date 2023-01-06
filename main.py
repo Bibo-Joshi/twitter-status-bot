@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 """The script that runs the bot."""
-import asyncio
+import functools
 import logging
 from configparser import ConfigParser
 
 from telegram.constants import ParseMode
-from telegram.ext import Application, ContextTypes, Defaults, PersistenceInput, PicklePersistence
+from telegram.ext import (
+    AIORateLimiter,
+    Application,
+    ContextTypes,
+    Defaults,
+    PersistenceInput,
+    PicklePersistence,
+)
 
 from bot.setup import setup_application
 from bot.userdata import UserData
@@ -45,16 +52,26 @@ def main() -> None:
         .defaults(defaults)
         .persistence(persistence)
         .context_types(context_types)
+        .post_init(
+            functools.partial(
+                setup_application, admin_id=admin_id, sticker_chat_id=sticker_chat_id
+            )
+        )
+        .rate_limiter(
+            # Don't apply rate limiting, but retry on `RetryAfter` errors
+            AIORateLimiter(
+                overall_max_rate=0,
+                overall_time_period=0,
+                group_max_rate=0,
+                group_time_period=0,
+                max_retries=3,
+            )
+        )
         .build()
     )
 
-    # Get the application to register handlers
-    asyncio.get_event_loop().run_until_complete(
-        setup_application(application, admin_id, sticker_chat_id)
-    )
-
     # Start the Bot
-    application.run_polling(drop_pending_updates=True, close_loop=False)
+    application.run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":

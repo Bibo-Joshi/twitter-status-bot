@@ -55,17 +55,6 @@ async def setup_application(
         admin_id: The admins chat id.
         sticker_chat_id: The name of the chat where stickers can be sent to get their file IDs.
     """
-    async with application:
-        await _setup_application(
-            application=application, admin_id=admin_id, sticker_chat_id=sticker_chat_id
-        )
-
-
-async def _setup_application(
-    application: Application[ExtBot, CCT, UserData, dict, dict, JobQueue],
-    admin_id: int,
-    sticker_chat_id: Union[str, int],
-) -> None:
     # error handlers
     application.add_error_handler(hyphenation_error)
     application.add_error_handler(error)
@@ -119,23 +108,23 @@ async def _setup_application(
 
     # Bot commands
     base_commands = [
-        ["help", "Displays a short info message about the Twitter Status Bot"],
-        ["start", 'See "/help"'],
-        ["info", 'Same as "/help"'],
-        ["toggle_store_stickers", "(De)activates the saving of stickers"],
-        ["delete_sticker", "Deletes one specific stored sticker"],
-        ["set_fallback_picture", "Sets fallback profile picture"],
-        ["delete_fallback_picture", "Deletes fallback profile picture"],
-        ["show_fallback_picture", "Shows current fallback profile picture"],
-        ["set_timezone", "Sets the timezone used for the stickers"],
-        [
+        ("help", "Displays a short info message about the Twitter Status Bot"),
+        ("start", 'See "/help"'),
+        ("info", 'Same as "/help"'),
+        ("toggle_store_stickers", "(De)activates the saving of stickers"),
+        ("delete_sticker", "Deletes one specific stored sticker"),
+        ("set_fallback_picture", "Sets fallback profile picture"),
+        ("delete_fallback_picture", "Deletes fallback profile picture"),
+        ("show_fallback_picture", "Shows current fallback profile picture"),
+        ("set_timezone", "Sets the timezone used for the stickers"),
+        (
             "toggle_text_direction",
             "Changes sticker text direction from right-to-left to left-to-right and vice versa",
-        ],
+        ),
     ]
     admin_commands = [
-        ["ilq", "Show Statistics for inline requests"],
-        ["text", "Show Statistics for text requests"],
+        ("ilq", "Show Statistics for inline requests"),
+        ("text", "Show Statistics for text requests"),
     ]
 
     await application.bot.set_my_commands(base_commands)

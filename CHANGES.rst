@@ -2,6 +2,15 @@
 Changelog
 =========
 
+Version 3.1
+===========
+*Released 2023-01-01*
+
+* Upgrade ``python-telegram-bot`` to v20.0
+* Upgrade ``ptbstats`` to v2.1
+* Fix a bug where the ``toggle_store_stickers`` setting was not respected for text stickers
+* Improve the error handler
+
 Version 3.0
 ===========
 *Released 2022-05-22*
