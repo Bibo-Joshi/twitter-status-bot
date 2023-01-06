@@ -6,7 +6,7 @@ ci:
 
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 22.12.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/flake8
@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/pylint
-    rev: v2.15.8
+    rev: v2.15.9
     hooks:
       - id: pylint
         files: ^(main|bot/\w*).py$
@@ -42,13 +42,13 @@ repos:
         - thefuzz~=0.19
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.0
+    rev: v3.3.1
     hooks:
       - id: pyupgrade
         args:
           - --py37-plus
   - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 5.11.4
     hooks:
       - id: isort
         name: isort
