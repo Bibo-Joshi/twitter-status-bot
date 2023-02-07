@@ -6,7 +6,7 @@ ci:
 
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: 23.1.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/flake8
@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/pylint
-    rev: v2.15.9
+    rev: v2.16.1
     hooks:
       - id: pylint
         files: ^(main|bot/\w*).py$
@@ -56,7 +56,7 @@ repos:
         - --diff
         - --check
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.210
+    rev: v0.0.243
     hooks:
       - id: ruff
         additional_dependencies:
