@@ -1,4 +1,4 @@
-python-telegram-bot[rate-limiter]~=20.3
+python-telegram-bot[rate-limiter]~=20.4
 Pillow~=10.0
 PyHyphen==4.0.3
 pytz
