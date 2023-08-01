@@ -23,7 +23,7 @@ repos:
           #  run pylint across multiple cpu cores to speed it up-
           - --jobs=0 # See https://pylint.pycqa.org/en/latest/user_guide/run.html?#parallel-execution to know more
         additional_dependencies:
-        - python-telegram-bot[rate-limiter]~=20.3
+        - python-telegram-bot[rate-limiter]~=20.4
         - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
@@ -35,7 +35,7 @@ repos:
       - id: mypy
         files: ^(main|bot/\w*).py$
         additional_dependencies:
-        - python-telegram-bot[rate-limiter]~=20.3
+        - python-telegram-bot[rate-limiter]~=20.4
         - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
@@ -60,7 +60,7 @@ repos:
     hooks:
       - id: ruff
         additional_dependencies:
-        - python-telegram-bot[rate-limiter]~=20.3
+        - python-telegram-bot[rate-limiter]~=20.4
         - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
