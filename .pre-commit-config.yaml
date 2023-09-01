@@ -27,7 +27,7 @@ repos:
         - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
-        - thefuzz~=0.19
+        - thefuzz~=0.20
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
@@ -39,7 +39,7 @@ repos:
         - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
-        - thefuzz~=0.19
+        - thefuzz~=0.20
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.10.1
@@ -64,5 +64,5 @@ repos:
         - Pillow~=9.3
         - PyHyphen==4.0.3
         - pytz
-        - thefuzz~=0.19
+        - thefuzz~=0.20
         - git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1

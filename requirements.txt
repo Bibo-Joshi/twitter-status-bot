@@ -2,5 +2,5 @@ python-telegram-bot[rate-limiter]~=20.4
 Pillow~=10.0
 PyHyphen==4.0.3
 pytz
-thefuzz~=0.19
+thefuzz~=0.20
 git+https://github.com/Bibo-Joshi/ptbstats.git@v2.1
