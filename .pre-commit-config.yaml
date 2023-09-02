@@ -24,7 +24,7 @@ repos:
           - --jobs=0 # See https://pylint.pycqa.org/en/latest/user_guide/run.html?#parallel-execution to know more
         additional_dependencies:
         - python-telegram-bot[rate-limiter]~=20.4
-        - Pillow~=9.3
+        - Pillow~=10.0
         - PyHyphen==4.0.3
         - pytz
         - thefuzz~=0.20
@@ -36,7 +36,7 @@ repos:
         files: ^(main|bot/\w*).py$
         additional_dependencies:
         - python-telegram-bot[rate-limiter]~=20.4
-        - Pillow~=9.3
+        - Pillow~=10.0
         - PyHyphen==4.0.3
         - pytz
         - thefuzz~=0.20
@@ -61,7 +61,7 @@ repos:
       - id: ruff
         additional_dependencies:
         - python-telegram-bot[rate-limiter]~=20.4
-        - Pillow~=9.3
+        - Pillow~=10.0
         - PyHyphen==4.0.3
         - pytz
         - thefuzz~=0.20
