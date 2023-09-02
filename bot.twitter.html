@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="bot.userdata Module" href="bot.userdata.html" /><link rel="prev" title="bot.setup Module" href="bot.setup.html" />
 
-    <link rel="shortcut icon" href="_static/TwitterStatusBot.ico"/><!-- Generated with Sphinx 7.1.1 and Furo 2023.08.19 -->
+    <link rel="shortcut icon" href="_static/TwitterStatusBot.ico"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19 -->
         <title>bot.twitter Module - Twitter Status Bot 3.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -219,7 +219,7 @@
         </div>
         <article role="main">
           <section id="bot-twitter-module">
-<h1>bot.twitter Module<a class="headerlink" href="#bot-twitter-module" title="Permalink to this heading">#</a></h1>
+<h1>bot.twitter Module<a class="headerlink" href="#bot-twitter-module" title="Link to this heading">#</a></h1>
 <p>Methods for creating the stickers.</p>
 <dl class="py exception">
 <dt class="sig sig-object py">
@@ -238,7 +238,7 @@
 <li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The text to display.</p></li>
 <li><p><strong>text_direction</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Optional. Direction of the text. Defaults to left-to-right. If libraqm
 is not available, this setting will be ignored.</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>]) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
 parts of the body creation and if the event is set, the creation will be terminated.</p></li>
 </ul>
 </dd>
@@ -260,7 +260,7 @@ parts of the body creation and if the event is set, the creation will be termina
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>timezone</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Optional. The timezone to use for the timestamp. Must be one of the timezones
 supported by <code class="docutils literal notranslate"><span class="pre">pytz</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">'Europe/Berlin'</span></code>.</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>]) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
 parts of the footer creation and if the event is set, the creation will be terminated.</p></li>
 </ul>
 </dd>
@@ -282,8 +282,8 @@ file and can be reused.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>user_data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code>) – The user data for the user this header is build for.</p></li>
-<li><p><strong>user_picture</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code>]) – Optional. The profile picture of the user. Defaults to the bots logo.</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>]) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
+<li><p><strong>user_picture</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code>) – Optional. The profile picture of the user. Defaults to the bots logo.</p></li>
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
 parts of the header creation and if the event is set, the creation will be terminated.</p></li>
 </ul>
 </dd>
@@ -306,7 +306,7 @@ parts of the header creation and if the event is set, the creation will be termi
 <li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Text of the tweet.</p></li>
 <li><p><strong>user</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.user.html#telegram.User" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a>) – The user the sticker is generated for.</p></li>
 <li><p><strong>context</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.callbackcontext.html#telegram.ext.CallbackContext" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallbackContext</span></code></a>[<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.extbot.html#telegram.ext.ExtBot" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtBot</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – The callback context as provided by the application.</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>]) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
 parts of the sticker creation and if the event is set, the creation will be terminated.</p></li>
 </ul>
 </dd>
@@ -329,7 +329,7 @@ file or created anew, if there is no header for the user or users info changed.<
 <li><p><strong>context</strong> (<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.callbackcontext.html#telegram.ext.CallbackContext" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CallbackContext</span></code></a>[<a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.extbot.html#telegram.ext.ExtBot" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtBot</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">UserData</span></code>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – The <a class="reference external" href="https://docs.python-telegram-bot.org/en/v20.0a0/telegram.ext.callbackcontext.html#telegram.ext.CallbackContext" title="(in python-telegram-bot v20.0a0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">telegram.ext.CallbackContext</span></code></a> as provided by the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">telegram.ext.Dispatcher</span></code>. Used to check, if for the given user an up to date
 header already exists.</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>]) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – Optional. If passed, <code class="docutils literal notranslate"><span class="pre">event.is_set()</span></code> will be checked before the time consuming
 parts of the header creation and if the event is set, the creation will be terminated.</p></li>
 </ul>
 </dd>
@@ -429,9 +429,9 @@ parts of the header creation and if the event is set, the creation will be termi
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=59d58bff"></script>
+</div><script src="_static/documentation_options.js?v=b6697784"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
