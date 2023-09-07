@@ -6,7 +6,7 @@ import logging
 import traceback
 from typing import cast
 
-from telegram import Update, InlineQueryResultsButton
+from telegram import InlineQueryResultsButton, Update
 from telegram.error import BadRequest, Forbidden
 
 from bot.constants import ADMIN_KEY
