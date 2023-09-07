@@ -153,7 +153,7 @@ class UserData:  # pylint: disable=R0902
     # We override __reduce__ to amend for the unpickable task & event
     def __reduce__(
         self,
-    ) -> Tuple[Callable[_CALLABLE_ARGS, "UserData"], _INIT_ARGS]:  # type: ignore[valid-type]
+    ) -> Tuple[Callable[_CALLABLE_ARGS, "UserData"], _INIT_ARGS]:  # type: ignore[misc, valid-type]
         return self.__class__, (
             self.user_id,
             self.username,

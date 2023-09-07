@@ -6,7 +6,7 @@ import logging
 import traceback
 from typing import cast
 
-from telegram import Update
+from telegram import InlineQueryResultsButton, Update
 from telegram.error import BadRequest, Forbidden
 
 from bot.constants import ADMIN_KEY
@@ -29,8 +29,9 @@ async def hyphenation_error(update: object, context: CCT) -> None:
     if update.inline_query:
         await update.inline_query.answer(
             results=[],
-            switch_pm_text="Click me! 👆",
-            switch_pm_parameter="hyphenation_error",
+            button=InlineQueryResultsButton(
+                text="Click me! 👆", start_parameter="hyphenation_error"
+            ),
         )
         return
     if update.effective_message:
