@@ -30,8 +30,7 @@ async def hyphenation_error(update: object, context: CCT) -> None:
         await update.inline_query.answer(
             results=[],
             button=InlineQueryResultsButton(
-                text="Click me! 👆",
-                start_parameter="hyphenation_error"
+                text="Click me! 👆", start_parameter="hyphenation_error"
             ),
         )
         return
