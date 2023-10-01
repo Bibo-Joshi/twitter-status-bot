@@ -1,5 +1,5 @@
 python-telegram-bot[rate-limiter]~=20.4
-Pillow~=9.5.0
+Pillow~=10.0.1
 PyHyphen==4.0.3
 pytz
 thefuzz~=0.20
