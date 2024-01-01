@@ -1,1 +1,1 @@
-pre-commit~=3.5
+pre-commit~=3.6
