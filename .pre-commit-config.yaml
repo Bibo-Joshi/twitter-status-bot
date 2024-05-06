@@ -1,8 +1,8 @@
 # Make sure that
 #   * the additional_dependencies here match requirements.txt
 
-ci:
-  autoupdate_schedule: monthly
+#ci:
+#  autoupdate_schedule: monthly
 
 repos:
   - repo: https://github.com/psf/black
